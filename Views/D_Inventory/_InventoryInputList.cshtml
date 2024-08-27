@@ -1,0 +1,137 @@
+﻿@model D_InventoryModel.D_InventorySearchModel
+@using stock_management_system.Models.common;
+@{
+    Model.GetBaseView(User, ViewContext);
+    ViewData["Title"] = Model.ViewTitle;
+}
+
+<style>
+    td {
+        vertical-align: middle !important;
+    }
+    .page-no-label {
+        font-weight:600!important;
+        font-size:13px;
+    }
+    .pagination {
+        margin-top: 0.5em !important;
+        margin-bottom: 0em !important;
+    }
+    .text-ellipsis {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+</style>
+
+<table class="sticky_table table-hover-event">
+    <thead>
+        <tr>
+            <th style="width:150px!important">
+                @Html.DisplayNameFor(model => model.InventoryStockList[0].ProductCode)
+            </th>
+            @if (Model.SystemSettingValue((int)Enums.SystemSetting.StockStatus_3011).Value == 1)
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model.InventoryStockList[0].ProductName)
+                </th>
+            }
+            @if (Model.SystemSettingValue((int)Enums.SystemSetting.StockStatus_3012).Value == 1)
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model.InventoryStockList[0].ProductAbbreviation)
+                </th>
+            }
+            <th>
+                @Html.DisplayNameFor(model => model.InventoryStockList[0].SupplierCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InventoryStockList[0].SupplierName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InventoryStockList[0].Packing)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InventoryStockList[0].StoreAddress1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InventoryStockList[0].StoreAddress2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InventoryStockList[0].LotQuantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InventoryStockList[0].FormalStoreAddressPackingCount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InventoryStockList[0].TemporaryStoreAddressPackingCount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InventoryStockList[0].TotalPackingCount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InventoryStockList[0].StockQuantity)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.InventoryStockList.Count(); ++i)
+        {
+            <tr>
+                <td style="width:150px!important">
+                    @Html.DisplayFor(model => model.InventoryStockList[i].ProductCode)
+                </td>
+                @if (Model.SystemSettingValue((int)Enums.SystemSetting.StockStatus_3011).Value == 1)
+                {
+                    <td class="text-center">
+                        @Html.DisplayFor(model => model.InventoryStockList[i].ProductName)
+                    </td>
+                }
+                @if (Model.SystemSettingValue((int)Enums.SystemSetting.StockStatus_3012).Value == 1)
+                {
+                    <td class="text-center">
+                        @Html.DisplayFor(model => model.InventoryStockList[i].ProductAbbreviation)
+                    </td>
+                }
+                <td class="">
+                    @Html.DisplayFor(model => model.InventoryStockList[i].SupplierCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.InventoryStockList[i].SupplierName)
+                </td>
+                <td class="">
+                    @Html.DisplayFor(model => model.InventoryStockList[i].Packing)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(model => model.InventoryStockList[i].StoreAddress1)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(model => model.InventoryStockList[i].StoreAddress2)
+                </td>
+                <td class="text-right">
+                    @Html.DisplayFor(model => model.InventoryStockList[i].LotQuantity)
+                </td>
+                <td class="text-right">
+                    @Html.DisplayFor(model => model.InventoryStockList[i].FormalStoreAddressPackingCount)
+                </td>
+                <td class="text-right">
+                    @Html.DisplayFor(model => model.InventoryStockList[i].TemporaryStoreAddressPackingCount)
+                </td>
+                <td class="text-right">
+                    <span class="font-weight-bold">@Html.DisplayFor(model => model.InventoryStockList[i].TotalPackingCount)</span>
+                </td>
+                <td class="text-right">
+                    <span class="font-weight-bold">@Html.DisplayFor(model => model.InventoryStockList[i].StockQuantity)</span>
+                </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function () {
+
+    })
+
+</script>

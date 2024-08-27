@@ -1,0 +1,125 @@
+﻿@using System.Security.Claims
+@model stock_management_system.Models.M_AGF_StackingNGModel.M_AGF_StackingNGViewModel
+
+@{
+	Model.GetBaseView(User, ViewContext);
+	ViewData["Title"] = Model.ViewTitle;
+}
+<head>
+	<style>
+	</style>
+</head>
+<div class="h4 mb-3 text-gray-800">
+	@ViewData["Title"]
+</div>
+
+<div id="stackingngmanagamentmodify"></div>
+<div class="card shadow">
+	<div class="card-header text-gray-800">
+		検索
+	</div>
+	<div class="card-body">
+		<div class="row">
+			<div class="col-md-12">
+				<form enctype="multipart/form-data" method="post" asp-controller="M_AGF_StackingNG" asp-action="Index">
+					<div class="form-row">
+						<div class="p-2" style="max-width:200px;">
+							<label>部品番号</label>
+							<input type="text" asp-for="TextSearch" name="TextSearch" id="tbxUserNameSearch" class="form-control " placeholder="キーワードを入力" autocomplete="off" />
+						</div>
+						<form class="form-inline" method="post" asp-controller="M_AGF_StackingNG" asp-action="Index">
+							<div class="p-2 p-btn-search" style="max-width:200px;">
+								<button type="submit" id="ReciptSerchBtn" class="btn btn-primary btn-icon-split">
+									<span class="icon text-white-50">
+										<i class="fas fa-search fa-fw"></i>
+									</span>
+									<span class="text">検索</span>
+								</button>
+							</div>
+						</form>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="p-2">
+			<span class="text-danger">@ViewData["Error"] </span>
+			<span class="text-success">@ViewData["Message"] </span>
+		</div>
+		<div class="agf-add-btn py-2">
+			<button type="button" class="btn btn-secondary btn-icon-split" data-toggle="modal" onclick="ImportStackingNGSubmitAjax()">
+				<span class="icon text-white-50">
+					<i class="fas fa-plus"></i>
+				</span>
+				<span class="text">追加</span>
+			</button>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<table class="sticky_table  table-hover-event">
+					<thead>
+						<tr>
+							<th class="table-icon-edit"></th>
+							<th>部品番号</th>
+							<th>最終更新日</th>
+							<th>最終更新者</th>
+						</tr>
+					</thead>
+					<tbody>
+						@if (@Model != null && @Model.StackingNGSearchList != null)
+						{
+							@foreach (var obj in @Model.StackingNGSearchList)
+							{
+								<tr>
+									<td class="table-icon-edit">
+										<button type="submit" id="storeIn-delete-btn" name="Delete" value="削除" class="btn btn-danger btn-square" onclick="EditStackingNGSubmitAjax(depoCode='@obj.DepoCode' , productCode='@obj.ProductCode' )">
+											<span class="icon text-white-50">
+												<i class="fas fa-trash"></i>
+											</span>
+										</button>
+									</td>
+									<td hidden>@obj.DepoCode</td>
+									<td>@obj.ProductCode</td>
+									<td>
+										@if (obj.LastUpdateDateTime.Contains("1900"))
+										{
+											@:-
+										}
+										else
+										{
+											@obj.LastUpdateDateTime
+										}
+									</td>
+									<td>
+										@if (obj.LastUpdateUserName == null)
+										{
+											@:-
+										}
+										else
+										{
+											@obj.LastUpdateUserName
+										}
+									</td>
+									<td hidden>@obj.OldProductCode</td>
+								</tr>
+							}
+						}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<br />
+<br />
+
+@section Scripts {
+	@*@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}*@
+	<script src="~/js/M_AGF_StackingNG/Index.js" asp-append-version="true"></script>
+	<script type="text/javascript">
+		let ROOT = '@Url.Content("~")';
+		$(document).ready(function () {
+
+		});
+	</script>
+
+}

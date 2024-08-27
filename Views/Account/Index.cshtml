@@ -1,0 +1,379 @@
+﻿@model AccountViewModel
+@{
+    ViewData["Title"] = "ログイン";
+    Layout = "_Layout_login";
+}
+
+<style>
+    /*--imagecolorはsite.cssで共通化*/
+    /*    :root {
+            --imagecolor1: rgba(21,150,104,1);
+            --imagecolor2: rgba(21,150,104,0.7);
+            --imagecolor3: rgba(125,204,136,0.3);
+        }
+    */
+
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: var(--imagecolor3);
+        text-rendering: optimizeLegibility;
+        font-kerning: normal;
+        font-variant-ligatures: common-ligatures contextual;
+        font-feature-settings: "kern", "liga", "clig", "calt";
+    }
+
+    .main-content {
+        display: flex;
+        justify-content: center;
+        margin: 0 auto;
+        margin-top: 100px;
+        padding: 0;
+        border-radius: 20px;
+        background-color: #ffffff;
+        width: 400px;
+        box-shadow: 0 2px 10px rgba(0,0,0,.4);
+        overflow: hidden;
+    }
+
+    .login-area {
+        width: 280px;
+        margin: 0;
+        padding: 15px;
+        color: #424242;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        text-align: center;
+    }
+
+    .system_logo img {
+        max-width: 100px;
+        max-height: 100px;
+        background: #ffffff;
+        border-radius: 50%;
+        object-fit: cover;
+        border: solid var(--imagecolor3);
+        border-bottom-color: var(--imagecolor1);
+        border-right-color: var(--imagecolor2);
+    }
+
+    .system_title {
+        font-size: x-large;
+        font-weight: bolder;
+        margin-bottom: 15px;
+        color: var(--imagecolor1);
+    }
+
+    .login-form {
+        font-size: smaller;
+        padding: 10px;
+    }
+
+    .text-danger {
+        color: #F44336;
+    }
+
+    .tozan-logo img {
+        width: 100%;
+        display: block;
+        margin: 10px auto;
+    }
+
+    .login-text {
+        width: 100%;
+        height: 40px;
+        border: 2px solid #9E9E9E;
+        border-radius: 40px 40px;
+        font-size: large;
+        margin-bottom: 5px;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    .login-btn {
+        width: 100%;
+        height: 40px;
+        border-radius: 40px 40px;
+        border: none;
+        font-size: large;
+        color: #ffffff;
+        background-color: var(--imagecolor2);
+        /*margin: 30px 0;*/
+        margin-bottom: 30px;
+    }
+
+    .login-btn {
+        box-shadow: 0 4px 0 var(--imagecolor1);
+    }
+
+        .login-btn:hover {
+            background-color: var(--imagecolor1);
+            transform: translateY(4px);
+            transition: .3s cubic-bezier(0.45, 0, 0.55, 1);
+            box-shadow: none;
+        }
+
+    .login-title {
+        margin-bottom: 40px;
+    }
+
+    .input-icon-with {
+        position: relative;
+    }
+
+        .input-icon-with input {
+            margin: 8px 0;
+            padding: 0.3em;
+            transition: 0.3s;
+            outline: none;
+        }
+
+            .input-icon-with input:focus {
+                border-color: var(--imagecolor1);
+            }
+
+        .input-icon-with input {
+            padding-left: 40px;
+        }
+
+        .input-icon-with span {
+            position: absolute;
+            top: 8px;
+            left: 0;
+            padding: 9px 8px;
+            transition: 0.3s;
+            color: #aaaaaa;
+        }
+
+        .input-icon-with input:focus + span {
+            color: var(--imagecolor1);
+        }
+
+    .info-area {
+        width: 50%;
+        margin: 0;
+        padding-top: 60px;
+        color: #424242;
+        background: rgb(92,107,192);
+        background: linear-gradient(110deg, rgba(92,107,192,1) 0%, rgba(79,195,247,1) 100%);
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        text-align: center;
+    }
+
+    .slick {
+        color: #ffffff;
+    }
+
+    .contact {
+        display: inline-block;
+        margin-top: 100px;
+        padding: 10px;
+        text-decoration: none;
+        font-size: x-large;
+        border-radius: 30px;
+        box-shadow: 0 2px 10px rgba(0,0,0,.4);
+        background: #FF5722;
+    }
+
+        .contact:visited, .contact:link {
+            color: #ffffff;
+        }
+
+    @@media screen and (max-width: 480px) {
+        .system_name {
+            margin-bottom: 50px;
+        }
+
+        body {
+            background: #ffffff;
+        }
+
+        .main-content {
+            flex-wrap: wrap;
+            margin-top: 0;
+            width: 100%;
+            color: #424242;
+            background-color: #ffffff;
+            box-shadow: none;
+            border-radius: 0;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .login-area, .info-area {
+            width: 100%;
+        }
+
+        .info-area {
+            padding-top: 10px;
+        }
+
+        .inner {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .contact {
+            margin-top: 30px;
+        }
+    }
+
+    .check-box-label {
+        cursor: pointer;
+    }
+
+    a {
+        transition: 0.5s;
+    }
+
+        a:hover {
+            color: var(--imagecolor1);
+        }
+</style>
+
+@{
+    if (ViewData["test"] != null)
+    {
+        <style>
+            :root {
+                --imagecolor1: rgb(153,102,102);
+                --imagecolor2: rgb(173,133,133);
+                --imagecolor3: rgb(194,163,163);
+                --imagecolor4: rgb(214,194,194);
+            }
+            .system_logo img {
+                filter: sepia(100%) hue-rotate(350deg) saturate(0.5) !important;
+            }
+        </style>
+    }
+}
+
+<div class="main-content">
+    <div class="login-area">
+        <div class="inner">
+            <div class="system_logo rotate-n-15">
+                <img src="~/image/スマホDE検品img2.png" />
+            </div>
+            <div class="system_title">
+                <h3>スマホDE検品</h3>
+            </div>
+            <div class="login-form">
+                <form method="post" name="loginInputForm" id="login-input-form">
+                    <span class="text-danger error-message">@ViewData["Error"] </span>
+                    <span class="text-danger"><b>@ViewData["ForcedError"]</b></span>
+                    <div class="input-icon-with">
+                        <input class="login-text" type="text" asp-for="Input.UserCode" placeholder="ユーザーコード">
+                        <span class="material-icons">
+                            person
+                        </span>
+                    </div>
+                    <span asp-validation-for="Input.UserCode" class="text-danger"></span>
+                    <div class="input-icon-with">
+                        <input class="login-text" type="password" asp-for="Input.Password" placeholder="パスワード">
+                        <span class="material-icons">
+                            lock
+                        </span>
+                    </div>
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+
+                    <div id="" class="p-3 large" style="text-align: center;">
+                        <input type="checkbox" asp-for="Input.RememberMe"> <label class="check-box-label" for="Input_RememberMe">ログイン状態を保持</label>
+                    </div>
+
+                    <button type="button" class="login-btn btn-imagecolor" onclick="LoginCheck(); return false;">LOGIN</button>
+                </form>
+                @*<a href="#" class="btn-link-imagecolor">ログインID・パスワードをお忘れの方</a>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.1.0/jquery-migrate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $('.slick').slick({
+        autoplay: true,
+        dots: true,
+        fade: true,
+    });
+    $('.slick-arrow').hide();
+</script>
+
+<script>
+    $(document).ready(function () {
+        history.pushState(null, null, null);
+        $(window).on("popstate", function (event) {
+            if (!event.originalEvent.state) {
+                history.pushState(null, null, null);
+                return;
+            }
+        });
+
+    });
+
+    function LoginCheck() {
+
+        var formData = new FormData(document.querySelector("#login-input-form"));
+        var pathFirst = location.pathname.split('/')[1];
+        var url = location.protocol + '//' + location.host + '/' + pathFirst + '/Account/OtherLoginCheck';
+
+        $.ajax({
+            url: url,
+            method: 'post',
+            data: formData,
+            processData: false,
+            contentType: false
+        }).done(function (response) {
+            if (response.result === true) {
+                if (response.value === 1) {
+                    LoginConfirm();
+                }
+                else {
+                    $("#login-input-form").submit();
+                }
+                return false;
+            }
+            else {
+                $(".error-message").text(response.message);
+                return false;
+            }
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+
+            $(".error-message").text("サーバーとの通信に失敗しました");
+        });
+
+    }
+
+    function LoginConfirm() {
+
+        $("#confirm-modal-body").html("<p>ログイン中のユーザーがいます。強制ログインしますか？</p>");
+        $("#confirm-modal-run-btn").attr("onclick", "IsLoginContinueSubmit();return false;");
+
+        $('#confirmModal').modal('show');
+    }
+
+    function IsLoginContinueSubmit() {
+
+        //var input = document.createElement('input');
+        //input.setAttribute('type', 'hidden');
+        //input.setAttribute('name', 'isLoginContinue');
+        //input.setAttribute('value', true);
+
+        //// 要素を追加
+        //document.loginInputForm.appendChild(input);
+
+        document.loginInputForm.submit();
+
+    }
+
+</script>

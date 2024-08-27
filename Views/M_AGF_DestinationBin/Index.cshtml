@@ -1,0 +1,145 @@
+﻿@using System.Security.Claims
+@model stock_management_system.Models.M_AGF_DestinationBinModel.M_AGF_DestinationBinViewModel
+
+@{
+	Model.GetBaseView(User, ViewContext);
+	ViewData["Title"] = Model.ViewTitle;
+}
+<head>
+	<style>
+	</style>
+</head>
+<div class="h4 mb-3 text-gray-800">
+	@ViewData["Title"]
+</div>
+
+<div id="destinationbinmanagamentmodify"></div>
+<div class="card shadow">
+	<div class="card-header text-gray-800">
+		検索
+	</div>
+	<div class="card-body">
+		<form enctype="multipart/form-data" method="post" asp-controller="M_AGF_DestinationBin" asp-action="Index">
+			<div class="form-row">
+				<div class="p-2" style="width:200px;">
+					<label>得意先コード</label>
+					<input asp-for="CustomerCodeSearch" name="CustomerCodeSearch" class="form-control" id="customer_code_search" type="text" placeholder="キーワード入力" autocomplete="off" />
+				</div>
+				<div class="p-2" style="width:200px;">
+					<label>受入</label>
+					<input asp-for="FinalDeliveryPlaceSearch" name="FinalDeliveryPlaceSearch" class="form-control" id="final_delivery_place_search" type="text" placeholder="キーワード入力" autocomplete="off" />
+				</div>
+				<div class="p-2" style="width:200px;">
+					<label>得意先名称</label>
+					<input asp-for="DestinationSearch" name="DestinationSearch" class="form-control" id="destination_search" type="text" placeholder="キーワード入力" autocomplete="off" />
+				</div>
+				<div class="p-2" style="max-width:200px;">
+					<label>運送会社名称</label>
+					<select asp-for="TruckBinName" asp-items="Model.TruckBinNameList" name="TruckBinName" class="form-control">
+						<option selected="selected" value="">全て</option>
+					</select>
+				</div>
+				<div class="p-2 p-btn-search" style="max-width:200px;">
+					<form class="form-inline" method="post" asp-controller="M_AGF_DestinationBin" asp-action="Index">
+						<div class="text-left">
+							<button type="submit" id="ReciptSerchBtn" class="btn btn-primary btn-icon-split" value="search">
+								<span class="icon text-white-50">
+									<i class="fas fa-search fa-fw"></i>
+								</span>
+								<span class="text">検索</span>
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="p-3">
+				<span class="text-danger">@ViewData["Error"] </span>
+				<span class="text-success">@ViewData["Message"] </span>
+			</div>
+			<div class="agf-add-btn py-2">
+				<button type="button" class="btn btn-secondary btn-icon-split" data-toggle="modal" onclick="ImportDestinationBinSubmitAjax()">
+					<span class="icon text-white-50">
+						<i class="fas fa-plus"></i>
+					</span>
+					<span class="text">追加</span>
+				</button>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<table class="sticky_table  table-hover-evant">
+						<thead>
+							<tr>
+								<th class="table-icon-edit"></th>
+								<th hidden>デポコード</th>
+								<th>得意先コード</th>
+								<th>受入</th>
+								<th>得意先名称</th>
+								<th>運送会社コード</th>
+								<th>運送会社名称</th>
+								<th>最終更新日</th>
+								<th>最終更新者</th>
+							</tr>
+						</thead>
+						<tbody>
+							@if (@Model != null && @Model.DestinationBinSearchList != null)
+							{
+								@foreach (var obj in @Model.DestinationBinSearchList)
+								{
+									<tr>
+										<td class="table-icon-edit">
+											<button type="button" class="btn btn-light btn-square" data-toggle="modal" onclick="EditDestinationBinSubmitAjax(customerCode = '@obj.CustomerCode' ,destination='@obj.Destination',finaldeliveryPlace = '@obj.FinalDeliveryPlace' ,truckbinCode = '@obj.TruckBinCode', oldCustomerCode = '@obj.OldFinalDeliveryPlace' ,oldFinalDeliveryPlace = '@obj.OldCustomerCode', oldTruckBinCode = '@obj.OldTruckBinCode')">
+												<i class="fas fa-edit"></i>
+											</button>
+										</td>
+										<td>@obj.CustomerCode</td>
+										<td>@obj.FinalDeliveryPlace</td>
+										<td>@obj.Destination</td>
+										<td>@obj.TruckBinCode</td>
+										<td>@obj.TruckBinName</td>
+										<td>
+											@if (obj.LastUpdateDateTime.Contains("1900"))
+											{
+												@:-
+											}
+											else
+											{
+												@obj.LastUpdateDateTime
+											}
+										</td>
+										<td>
+											@if (obj.LastUpdateUserName == null)
+											{
+												@:-
+											}
+											else
+											{
+												@obj.LastUpdateUserName
+											}
+										</td>
+										<td hidden>@obj.OldCustomerCode</td>
+										<td hidden>@obj.OldFinalDeliveryPlace</td>
+										<td hidden>@obj.OldTruckBinCode</td>
+									</tr>
+								}
+							}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+<br />
+<br />
+
+@section Scripts {
+	@*@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}*@
+	<script src="~/js/M_AGF_DestinationBin/Index.js" asp-append-version="true"></script>
+	<script type="text/javascript">
+		let ROOT = '@Url.Content("~")';
+		$(document).ready(function () {
+
+		});
+	</script>
+
+}

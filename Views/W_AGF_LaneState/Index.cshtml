@@ -1,0 +1,241 @@
+﻿@using System.Security.Claims
+@model stock_management_system.Models.W_AGF_LaneStateModel.W_AGF_LaneStateViewModel
+
+@{
+	Model.GetBaseView(User, ViewContext);
+	ViewData["Title"] = Model.ViewTitle;
+}
+
+<style>
+	.TdCheckbox {
+		text-align: center;
+	}
+</style>
+
+<div class="h4 mb-3 text-gray-800">
+	@ViewData["Title"]
+</div>
+
+<div id="lanestatemanagamentmodify"></div>
+<div class="card shadow">
+	<div class="card-header text-gray-800">
+		検索
+	</div>
+	<div class="card-body">
+		<form method="post" asp-controller="W_AGF_LaneState" id="searchForm">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="form-row">
+						<div class="p-2" style="width:200px;">
+							<label>レーン</label>
+							<select asp-for="SearchLaneNo" asp-items="Model.LaneNoList" class="form-control">
+								<option value="0">全て</option>
+							</select>
+						</div>
+						<div class="p-2" style="max-width:200px;">
+							<label>レーン番地</label>
+							<input type="text" asp-for="SearchLaneAddress" id="tbxUserNameSearch" class="form-control" autocomplete="off" placeholder="キーワードを入力" />
+						</div>
+						<div class="p-2" style="max-width:200px;">
+							<label>状態</label>
+							<select asp-for="SelectedStateName" asp-items="Model.StateList" class="form-control">
+								<option value="0">全て</option>
+							</select>
+						</div>
+
+						<div class="p-2 p-btn-search" style="max-width:200px;">
+							<label></label>
+							<button type="submit" id="search-btn" class="btn btn-primary btn-icon-split" name="search" value="検索">
+								<span class="icon text-white-50">
+									<i class="fas fa-search fa-fw"></i>
+								</span>
+								<span class="text">検索</span>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="p-2">
+				<span class="text-danger">@ViewData["Error"] </span>
+				<span class="text-success span-message">@ViewData["Message"] </span>
+				<span id="div-error-message" class="mt-1 text-danger"></span>
+			</div>
+
+			<div id="div-table" style="display: none;">
+				<div class="p-2">
+					<small>
+						@* チェックを入れたレーン番地の状態を 1:荷物あり または 2:禁止 に変更することができます。 *@
+						チェックを入れたレーン番地の状態を 1:荷物あり に変更することができます。
+					</small>
+				</div>
+
+				<div class="row">
+					<div class="col-md-12">
+						<table class="sticky_table table-hover-event" id="table-datatable" style="height: 450px;">
+							<thead>
+								<tr>
+									<th class="table-icon-edit"></th>
+									<th>レーン</th>
+									<th>レーン番地</th>
+									<th>荷物状態</th>
+									<th hidden>レーン状態名称</th>
+									<th hidden>レーン状態値</th>
+									<th>レーン状態</th>
+								</tr>
+							</thead>
+							<tbody></tbody>
+						</table>
+					</div>
+				</div>
+
+				<div class="p-2" style="max-width:200px;">
+					<button type="submit" id="update-btn" class="btn btn-success btn-icon-split">
+						<span class="icon text-white-50">
+							<i class="fas fa-pen"></i>
+						</span>
+						<span class="text">一括更新</span>
+					</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+<br />
+
+@section Scripts {
+	@*@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}*@
+	<script src="~/js/W_AGF_LaneState/Index.js" asp-append-version="true"></script>
+	<script type="text/javascript">
+		let ROOT = '@Url.Content("~")';
+		$(document).ready(function () {
+
+			// 検索ボタン押下
+			$('#search-btn').click(function () {
+				$('.text-success').text('');
+				$('#searchForm').submit(function (e) {
+					// ページの更新を禁止する
+					e.preventDefault();
+					// 送信イベントが他のハンドラーに伝播するのを防ぐ
+					e.stopImmediatePropagation();
+
+					// フォーム情報取得
+					let url = window.location.origin + '@Url.Action("SearchData", "W_AGF_LaneState")';
+					let method = 'POST';
+					let data = $(this).serialize();
+
+					$.ajax({
+						url: url,
+						method: method,
+						data: data
+					}).done(function (response) {
+						// 検索結果表示
+						$("#table-datatable tbody").empty();
+						$("#div-table").show();
+						$("#table-datatable tbody").html(response);
+					}).fail(function (xhr, textStatus, errorThrown) {
+						if (xhr.status === 404) {
+							$("#div-error-message").text('データ更新に失敗しました');
+						} else {
+							$("#div-error-message").text('タイムアウトしました。一度ログアウトして、再度ログインしてください。');
+						}
+					});
+				});
+			});
+
+			// 更新ボタン押下
+			$('#update-btn').click(function () {
+				showLoading();
+				$('.text-success').text('');
+				// テーブル内の行のリストを取得
+				let rows = $('#table-datatable tbody tr');
+				let data = [];
+
+				rows.each(function () {
+					// 行内の各セルから値を取得
+					let laneNo = $(this).find('.LaneNo').text();
+					let laneAddress = $(this).find('.LaneAddress').text();
+					let stateName = $(this).find('.StateName').text();
+					let lokingName = $(this).find('.LokingName').text();
+					let loking = parseInt($(this).find('.Loking').text());
+					let isChecked = $(this).find('.TdCheckbox input[type="checkbox"]').is(':checked');
+					let lokingRadio = parseInt($(this).find('.LokingRadio input[type="radio"]:checked').val());
+
+					//console.log({ r });
+					// console.log({ loking });
+					// 配列にデータを追加
+					data.push({
+						LaneNo: laneNo,
+						LaneAddress: laneAddress,
+						StateName: stateName,
+						LokingName: lokingName,
+						Loking: loking,
+						IsChecked: isChecked,
+						LokingRadio: lokingRadio
+					});
+				});
+
+				console.log({ data });
+
+				// フォーム情報取得
+				let url = window.location.origin + '@Url.Action("Update", "W_AGF_LaneState")';
+				let method = 'POST';
+
+				$.ajax({
+					url: url,
+					method: method,
+					contentType: 'application/json',
+					data: JSON.stringify(data)
+				}).done(function (response) {
+					hideLoading();
+					$('#search-btn').trigger('click');
+					$('.span-message').text('データを更新しました');
+				}).fail(function (xhr, textStatus, errorThrown) {
+					hideLoading();
+					if (xhr.status === 404) {
+						$("#div-error-message").text('データ更新に失敗しました');
+					} else {
+						$("#div-error-message").text('タイムアウトしました。一度ログアウトして、再度ログインしてください。');
+					}
+				});
+			});
+
+			// 処理中の更新ボタンをクリック不可に変更
+			function showLoading() {
+				$("#update-btn").attr("disabled", true);
+				$("#update-btn .text").text("一括更新中")
+			}
+
+			function hideLoading() {
+				$("#update-btn").removeAttr("disabled");
+				$("#update-btn .text").text("一括更新")
+			}
+		});
+
+		// チェックボックスがチェックされたときに背景を変更
+		function OnChangeCheckbox(checkbox) {
+			const tr = checkbox.parentElement.parentElement;
+			if (checkbox.checked) {
+				for (const td of tr.children) {
+					td.style.backgroundColor = '#FFF2CC';
+				}
+			} else {
+				for (const td of tr.children) {
+					td.style.backgroundColor = '';
+				}
+			}
+		}
+
+		function OnChangeRadio(radio) {
+			const tr = radio.parentElement.parentElement;
+			if (radio.checked) {
+				for (const td of tr.children) {
+					td.style.backgroundColor = '#FFF2CC';
+				}
+			} else {
+				for (const td of tr.children) {
+					td.style.backgroundColor = '';
+				}
+			}
+		}
+	</script>
+}

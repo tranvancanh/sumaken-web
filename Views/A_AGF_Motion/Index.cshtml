@@ -1,0 +1,177 @@
+﻿@using System.Security.Claims
+@model stock_management_system.Models.A_AGF_MotionModel.A_AGF_MotionViewModel
+
+@{
+	Model.GetBaseView(User, ViewContext);
+	ViewData["Title"] = Model.ViewTitle;
+}
+<head>
+	<style>
+	</style>
+</head>
+<div class="h4 mb-3 text-gray-800">
+	@ViewData["Title"]
+</div>
+
+<div id="motionmanagamentmodify"></div>
+<div class="card shadow">
+	<div class="card-header text-gray-800">
+		検索
+	</div>
+	<div class="card-body">
+		<div class="row">
+			<form enctype="multipart/form-data" method="post" asp-controller="A_AGF_Motion" asp-action="Index">
+				<div class="form-row">
+					<div class="p-2" style="width:200px;">
+						<label>動作日付(始)</label>
+						<input type="text" asp-for="@Model.MotionDateStart" name="MotionDateStart" class="form-control datepicker" id="AGFMotionTextColorStart" readonly>
+						<span asp-validation-for="MotionDateStart" class="text-danger"></span>
+					</div>
+					<div class="p-2" style="width:200px;">
+						<label>動作日付(終)</label>
+						<input type="text" asp-for="@Model.MotionDateEnd" name="MotionDateEnd" class="form-control datepicker" id="AGFMotionTextColorEnd" readonly>
+						<span asp-validation-for="MotionDateEnd" class="text-danger"></span>
+					</div>
+					<div class="p-2" style="width:200px;">
+						<label>レーン</label>
+						<select asp-for="LaneNo" asp-items="Model.LaneNoList" name="LaneNo" class="form-control">
+							<option value="">全て</option>
+						</select>
+					</div>
+					<div class="p-2" style="width:200px;">
+						<label>運送会社名称</label>
+						<select asp-for="TruckBinName" asp-items="Model.TruckBinNameList" name="TruckBinName" class="form-control">
+							<option value="">全て</option>
+						</select>
+					</div>
+					<div class="p-2" style="width:200px;">
+						<label>行先名称</label>
+						<input asp-for="@Model.Destination" name="Destination" class="form-control" id="destination" type="text" placeholder="キーワード入力" autocomplete="off" />
+					</div>
+					<form class="form-inline" method="post" asp-controller="A_AGF_Motion" asp-action="Index">
+						<div class="p-2 p-btn-search" style="max-width:200px;">
+							<button type="submit" id="ReciptSerchBtn" class="btn btn-primary btn-icon-split" name="Search" value="検索">
+								<span class="icon text-white-50">
+									<i class="fas fa-search fa-fw"></i>
+								</span>
+								<span class="text">検索</span>
+							</button>
+						</div>
+						<div class="p-2 p-btn-search" style="max-width:200px;">
+							<button type="submit" id="ReciptCheckBtn" class="btn btn-info btn-icon-split" name="Clear" value="検索クリア">
+								<span class="icon text-white-50">
+									<i class="fas fa-check fa-fw"></i>
+								</span>
+								<span class="text">検索クリア</span>
+							</button>
+						</div>
+					</form>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="p-2">
+		<span class="text-danger">@ViewData["Error"] </span>
+		<span class="text-success">@ViewData["Message"] </span>
+	</div>
+	@* <div class="agf-add-btn py-2">
+	<button type="button" class="btn btn-secondary btn-icon-split" data-toggle="modal" onclick="ImportMotionSubmitAjax()">
+	<span class="icon text-white-50">
+	<i class="fas fa-plus"></i>
+	</span>
+	<span class="text">追加</span>
+	</button>
+	</div> *@
+	<div class="row">
+		<div class="col-md-12">
+			<table class="sticky_table  table-hover-event">
+				<thead>
+					<tr>
+						@* <th class="table-icon-edit"></th> *@
+						@* <th>ログID</th> *@
+						<th>デポコード</th>
+						<th>動作日付</th>
+						<th>荷取りST</th>
+						<th>レーン</th>
+						<th>レーン番地</th>
+						<th>運送会社名称</th>
+						<th>得意先コード</th>
+						<th>受入</th>
+						<th>行先名称</th>
+						<th>部品番号</th>
+					</tr>
+				</thead>
+				<tbody>
+					@if (@Model != null && @Model.AGFMotionSearchList != null)
+					{
+						@foreach (var obj in @Model.AGFMotionSearchList)
+						{
+							<tr>
+								@* <td class="table-icon-edit">
+						<button type="button" class="btn btn-light btn-square" data-toggle="modal" onclick="EditMotionSubmitAjax(depoCode = '@obj.DepoCode' , productCode = '@obj.ProductCode'  , )">
+						<i class="fas fa-edit"></i>
+						</button>
+						</td> *@
+								@* <td>@obj.ID</td> *@
+								<td class="text-center">@obj.DepoCode</td>
+								<td class="text-center">@obj.CreateDateTime</td>
+								<td class="text-center">@obj.LuggageStation</td>
+								<td class="text-center">@obj.LaneNo</td>
+								<td class="text-center">@obj.LaneAddress</td>
+								<td class="text-center">@obj.TruckBinName</td>
+								<td class="text-center">@obj.CustomerCode</td>
+								<td class="text-center">@obj.FinalDeliveryPlace</td>
+								<td class="text-center">@obj.Destination</td>
+								<td class="text-center">@obj.ProductCode</td>
+							</tr>
+						}
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<br />
+<br />
+
+@section Scripts {
+	@*@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}*@
+	<script type="text/javascript" src="~/js/site.js"></script>
+					let ROOT = '@Url.Content("~")';
+			$(document).ready(function () {
+
+			});
+
+}
+<script type="text/javascript">
+// 検索クリアボタン押下
+$('#ReciptCheckBtn').click(function () {
+	$('#destination').val('');
+	$('#AGFMotionTextColorStart').val('');
+	$('#AGFMotionTextColorEnd').val('');
+	$('#LaneNo').val('');
+	$('#TruckBinName').val('');
+});
+//動作日付の値がnullの場合、今日の日付を設定する
+$(function () {
+	$('#AGFMotionTextColorStart').datepicker({
+		format: 'yyyy-mm-dd',
+		language: 'ja',
+		autoclose: true,
+		todayHighlight: true,
+	});
+	$('#AGFMotionTextColorEnd').datepicker({
+		format: 'yyyy-mm-dd',
+		language: 'ja',
+		autoclose: true,
+		todayHighlight: true,
+	});
+	if ($('#AGFMotionTextColorStart').val() == '') {
+		$('#AGFMotionTextColorStart').datepicker('setDate', new Date());
+	}
+	if ($('#AGFMotionTextColorEnd').val() == '') {
+		$('#AGFMotionTextColorEnd').datepicker('setDate', new Date());
+	}
+});
+
+</script>

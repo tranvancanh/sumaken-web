@@ -1,0 +1,279 @@
+﻿@model D_StockStatusModel.D_StockStatusSearchModel
+
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@using stock_management_system.Models.common;
+
+<style>
+    td {
+        vertical-align: middle !important;
+    }
+    .page-no-label {
+        font-weight:600!important;
+        font-size:13px;
+    }
+    .pagination {
+        margin-top: 0.5em !important;
+        margin-bottom: 0em !important;
+    }
+    .text-ellipsis {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+</style>
+
+<table class="sticky_table table-hover-event">
+    <thead>
+        <tr>
+            <th style="width:150px!important">
+                @Html.DisplayNameFor(model => model.StockList[0].ProductCode)
+            </th>
+            @if (Model.SystemSettingValue((int)Enums.SystemSetting.StockStatus_3011).Value == 1)
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model.StockList[0].ProductName)
+                </th>
+            }
+            @if (Model.SystemSettingValue((int)Enums.SystemSetting.StockStatus_3012).Value == 1)
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model.StockList[0].ProductAbbreviation)
+                </th>
+            }
+            <th>
+                @Html.DisplayNameFor(model => model.StockList[0].SupplierCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StockList[0].SupplierName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StockList[0].Packing)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StockList[0].StoreAddress1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StockList[0].StoreAddress2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StockList[0].LotQuantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StockList[0].FormalStoreAddressPackingCount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StockList[0].TemporaryStoreAddressPackingCount)
+            </th>
+            @if (Model.SystemSettingValue((int)Enums.SystemSetting.StockStatus_3010).Value == 0)
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model.StockList[0].TotalPackingCount)
+                </th>
+            }
+            else
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model.StockList[0].StockQuantity)
+                </th>
+            }
+            @if (Model.SystemSettingValue((int)Enums.SystemSetting.StockStatus_3010).Value == 0)
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model.StockList[0].MinPackingCount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StockList[0].MaxPackingCount)
+                </th>
+            }
+            else
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model.StockList[0].MinQuantity)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StockList[0].MaxQuantity)
+                </th>
+            }
+            <th>
+                @Html.DisplayNameFor(model => model.StockList[0].LastStoreInDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StockList[0].LastStoreOutDate)
+            </th>
+            <th class="table-border-less"></th>
+            <th class="table-border-less"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.StockList.Count(); ++i)
+        {
+            <tr>
+                <td style="width:150px!important">
+                    @Html.DisplayFor(model => model.StockList[i].ProductCode)
+                </td>
+                @if (Model.SystemSettingValue((int)Enums.SystemSetting.StockStatus_3011).Value == 1)
+                {
+                    <td class="text-center">
+                        @Html.DisplayFor(model => model.StockList[i].ProductName)
+                    </td>
+                }
+                @if (Model.SystemSettingValue((int)Enums.SystemSetting.StockStatus_3012).Value == 1)
+                {
+                    <td class="text-center">
+                        @Html.DisplayFor(model => model.StockList[i].ProductAbbreviation)
+                    </td>
+                }
+                <td class="">
+                    @Html.DisplayFor(model => model.StockList[i].SupplierCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.StockList[i].SupplierName)
+                </td>
+                <td class="">
+                    @Html.DisplayFor(model => model.StockList[i].Packing)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(model => model.StockList[i].StoreAddress1)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(model => model.StockList[i].StoreAddress2)
+                </td>
+                <td class="text-right">
+                    @Html.DisplayFor(model => model.StockList[i].LotQuantity)
+                </td>
+                <td class="text-right">
+                    @Html.DisplayFor(model => model.StockList[i].FormalStoreAddressPackingCount)
+                </td>
+                <td class="text-right">
+                    @Html.DisplayFor(model => model.StockList[i].TemporaryStoreAddressPackingCount)
+                </td>
+                @if (Model.SystemSettingValue((int)Enums.SystemSetting.StockStatus_3010).Value == 0)
+                {
+                    <td class="text-right">
+                        @if (Model.StockList[i].MinPackingCountAlert)
+                        {
+                            <span class="font-weight-bold text-danger">@Html.DisplayFor(model => model.StockList[i].TotalPackingCount)</span>
+                        }
+                        else
+                        {
+                            <span class="font-weight-bold">@Html.DisplayFor(model => model.StockList[i].TotalPackingCount)</span>
+                        }
+                    </td>
+                }
+                else
+                {
+                    <td class="text-right">
+                        @if (Model.StockList[i].MinQuantityAlert)
+                        {
+                            <span class="font-weight-bold text-danger">@Html.DisplayFor(model => model.StockList[i].StockQuantity)</span>
+                        }
+                        else
+                        {
+                            <span class="font-weight-bold">@Html.DisplayFor(model => model.StockList[i].StockQuantity)</span>
+                        }
+                    </td>
+                }
+                @if (Model.SystemSettingValue((int)Enums.SystemSetting.StockStatus_3010).Value == 0)
+                {
+                    <td class="text-right">
+                        @Html.DisplayFor(model => model.StockList[i].MinPackingCount)
+                    </td>
+                    <td class="text-right">
+                        @Html.DisplayFor(model => model.StockList[i].MaxPackingCount)
+                    </td>
+                }
+                else
+                {
+                    <td class="text-right">
+                        @Html.DisplayFor(model => model.StockList[i].MinQuantity)
+                    </td>
+                    <td class="text-right">
+                        @Html.DisplayFor(model => model.StockList[i].MaxQuantity)
+                    </td>
+                }
+                <td class="text-center">
+                    @if (Model.StockList[i].LastStoreInDate == "1900/01/01")
+                    {
+                        <span>-</span>
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(model => model.StockList[i].LastStoreInDate)
+                    }
+                </td>
+                <td class="text-center">
+                    @if (Model.StockList[i].LastStoreOutDate == "1900/01/01")
+                    {
+                        <span>-</span>
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(model => model.StockList[i].LastStoreOutDate)
+                    }
+                </td>
+                @if (Model.SystemSettingValue((int)Enums.SystemSetting.StockStatus_3010).Value == 0)
+                {
+                    <td class="text-left table-border-less">
+                        @if (Model.StockList[i].MinPackingCountAlert)
+                        {
+                            <h6><span class="badge badge-pill badge-danger">@Html.DisplayNameFor(model => model.StockList[0].MinPackingCountAlert)</span></h6>
+                        }
+                        else if (Model.StockList[i].MaxPackingCountAlert)
+                        {
+                            <h6><span class="badge badge-pill badge-primary">@Html.DisplayNameFor(model => model.StockList[0].MaxPackingCountAlert)</span></h6>
+                        }
+                    </td>
+                }
+                else
+                {
+                    <td class="text-left table-border-less">
+                        @if (Model.StockList[i].MinQuantityAlert)
+                        {
+                            <h6><span class="badge badge-pill badge-danger">@Html.DisplayNameFor(model => model.StockList[0].MinQuantityAlert)</span></h6>
+                        }
+                        else if (Model.StockList[i].MaxQuantityAlert)
+                        {
+                            <h6><span class="badge badge-pill badge-primary">@Html.DisplayNameFor(model => model.StockList[0].MaxQuantityAlert)</span></h6>
+                        }
+                    </td>
+                }
+                <td class="text-left table-border-less">
+                    @if (Model.StockList[i].HalfYearNotShipment)
+                    {
+                        <h6><span class="badge badge-pill badge-secondary">@Html.DisplayNameFor(model => model.StockList[0].HalfYearNotShipment)</span></h6>
+                    }
+                    else if (Model.StockList[i].OneYearNotShipment)
+                    {
+                        <h6><span class="badge badge-pill badge-warning">@Html.DisplayNameFor(model => model.StockList[0].OneYearNotShipment)</span></h6>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@Html.PagedListPager(
+        (IPagedList)Model.StockList,
+        page => Url.Action("SearchByPageChange", new { page }),
+        new X.PagedList.Mvc.Core.PagedListRenderOptions    //Bootstrap4を利用する場合はオプションを利用してタグにクラスを追加しないとデザインが反映されない
+        {
+            LiElementClasses = new string[] { "page-item" },
+            PageClasses = new string[] { "page-link" },
+            MaximumPageNumbersToDisplay = 10,                                                 //表示するページャーの数
+            DisplayLinkToNextPage = X.PagedList.Mvc.Common.PagedListDisplayMode.IfNeeded,      //「次へ」の非表示設定
+            DisplayLinkToPreviousPage = X.PagedList.Mvc.Common.PagedListDisplayMode.IfNeeded,   //「前へ」の非表示設定
+            DisplayLinkToFirstPage = X.PagedList.Mvc.Common.PagedListDisplayMode.IfNeeded,      //「最初へ」の非表示設定
+            DisplayLinkToLastPage = X.PagedList.Mvc.Common.PagedListDisplayMode.IfNeeded,       //「最後へ」の表示設定
+        }
+)
+<span class="page-no-label">
+    @(Model.Page.PageRowCount == 0 ? 0 : @Model.Page.PageRowStartNo) - @Model.Page.PageRowEndNo 件 / @Model.Page.PageRowCount 件中
+</span>
+
+<script>
+    $(document).ready(function () {
+
+    })
+
+</script>

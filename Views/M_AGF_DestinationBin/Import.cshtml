@@ -1,0 +1,68 @@
+﻿@using System.Security.Claims
+@model stock_management_system.Models.M_AGF_DestinationBinModel
+@{
+	Layout = null;
+}
+
+<head>
+	<style>
+	</style>
+</head>
+
+<!-- Modal -->
+<div class="modal fade" id="importdestinationbinmanagament" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title w-100 text-center position-absolute font-weight-bold">追加</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+			</div>             <!--Modal Header End-->
+			<div class="modal-body">
+				<form method="post" asp-controller="M_AGF_DestinationBin" asp-action="Import" enctype="multipart/form-data" autocomplete="on"
+					  data-ajax="true" data-ajax-update="formDetails">
+					@Html.AntiForgeryToken()
+					<span class="text-danger">@ViewData["Error"] </span>
+					<div class="modal-body m">
+						@* <div class="form-group">
+						<label>得意先選択</label>
+						<select asp-for="CustomerCode" asp-items="Model.DestinationBinList" name="CustomerCode" class="form-control">
+						<option value="">選択してください</option>
+						</select>
+						</div> *@
+						<div class="form-group">
+							<label>得意先コード入力</label>
+							<input asp-for="@Model.CustomerCode" name="CustomerCode" class="form-control" id="customer_codeEdit" type="text" placeholder="入力してください" />
+						</div>
+						<div class="form-group">
+							<label>受入入力</label>
+							<input asp-for="@Model.FinalDeliveryPlace" name="FinalDeliveryPlace" class="form-control" id="final_delivery_placeEdit" type="text" placeholder="入力してください" />
+						</div>
+						<div class="form-group">
+							<label>得意先名称入力</label>
+							<input asp-for="@Model.Destination" name="Destination" class="form-control" id="destinationEdit" type="text" placeholder="入力してください"/>
+						</div>
+						<div class="form-group">
+							<label>運送会社選択</label>
+							<select asp-for="TruckBinCode" asp-items="Model.TruckBinList" name="TruckBinCode" class="form-control">
+								<option value="">選択してください</option>
+							</select>
+						</div>
+						<!--Modal Footer Start-->
+						<div class="modal-footer mt-5">
+							<button class="btn btn-success col" type="submit">保存</button>
+							<button class="btn btn-secondary col" type="button" onclick="ImportCancelSubmit()">キャンセル</button>
+						</div>  <!--Modal Footer End-->
+					</div>
+				</form>
+			</div>             <!--Modal Body End-->
+		</div>
+	</div>
+</div>
+<!--Modal Body End-->
+@*
+
+
+@section Scripts {
+ @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+}*@

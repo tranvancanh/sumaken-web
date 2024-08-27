@@ -1,0 +1,81 @@
+﻿@model stock_management_system.Models.M_AGF_DestinationBinModel
+@{
+    Layout = null;
+}
+
+<head>
+    <style>
+    </style>
+</head>
+
+<!-- Modal -->
+<div class="modal fade" id="editdestinationbinmanagament" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title w-100 text-center position-absolute font-weight-bold">修正</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>             <!--Modal Header End-->
+            <div class="modal-body">
+                <form method="post" asp-controller="M_AGF_DestinationBin" asp-action="Edit" enctype="multipart/form-data" autocomplete="on"
+                      data-ajax="true" data-ajax-update="formDetails">
+                    @Html.AntiForgeryToken()
+                    <span class="text-danger">@ViewData["Error"] </span>
+                    <div class="modal-body m">
+                        <div class="form-group">
+                            <label>得意先コード</label>
+                            <input asp-for="@Model.CustomerCode" name="CustomerCode" class="form-control" id="customer_codeEdit" type="text"readonly />
+                        </div>
+                        <div class="form-group">
+                            <label>受入</label>
+                            <input asp-for="@Model.FinalDeliveryPlace" name="FinalDeliveryPlace" class="form-control" id="final_delivery_placeEdit" type="text" readonly />
+                        </div>
+                        <div class="form-group">
+                            <label>得意先名称</label>
+                            <input asp-for="@Model.Destination" name="Destination" class="form-control" id="destinationEdit" type="text" readonly />
+                        </div>
+                        <div class="form-group">
+                            <label>運送会社選択</label>
+                            <select asp-for="TruckBinCode" asp-items="Model.TruckBinList" name="TruckBinCode" class="form-control"></select>
+                        </div>
+                        <div hidden class="form-group">
+                            <label>old得意先コード</label>
+                            <input asp-for="@Model.OldCustomerCode" name="OldCustomerCode" class="form-control" id="old_customer_codeEdit" type="text" />
+                        </div>
+                        <div hidden class="form-group">
+                            <label>old受入</label>
+                            <input asp-for="@Model.OldFinalDeliveryPlace" name="OldFinalDeliveryPlace" class="form-control" id="old_final_delivery_placeEdit" type="text" />
+                        </div>
+                        <div hidden class="form-group">
+                            <label>old運送会社便コード</label>
+                            <input asp-for="@Model.OldTruckBinCode" name="OldTruckBinCode" class="form-control" id="old_truck_bin_code" type="text" />
+                        </div>
+                        <div class="btn-header pt-6">
+                        <div class="btn-headerLeft">
+                                <button type="submit" onclick="DeleteDestinationBin()" id="storeIn-delete-btn" name="Delete" value="削除" class="btn btn-danger btn-icon-split">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-trash"></i>
+                                </span>
+                                <span class="text">削除</span>
+                            </button>
+                        </div>
+                        </div>
+                        <!--Modal Footer Start-->
+                        <div class="modal-footer mt-6">
+                            <button class="btn btn-success col" type="submit" name="Updata"value="保存">保存</button>
+                            <button class="btn btn-secondary col" type="button" onclick="EditCancelSubmit()">キャンセル</button>
+                        </div>  <!--Modal Footer End-->
+                    </div>
+                </form>
+            </div>             <!--Modal Body End-->
+        </div>
+    </div>
+</div>
+<!--Modal Body End-->
+@*
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+}*@

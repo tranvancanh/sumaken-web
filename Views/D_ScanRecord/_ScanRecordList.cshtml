@@ -1,0 +1,150 @@
+﻿@model D_ScanRecordModel.D_ScanRecordViewModel
+
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@using stock_management_system.Models.common;
+
+<style>
+    td {
+        vertical-align: middle !important;
+    }
+    .page-no-label {
+        font-weight:600!important;
+        font-size:13px;
+    }
+    .pagination {
+        margin-top: 0.5em !important;
+        margin-bottom: 0em !important;
+    }
+    .text-ellipsis {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+</style>
+
+<table class="sticky_table  table-hover-event">
+    <thead>
+        <tr>
+@*            <th class="table-button"></th>*@
+            <th>
+                デポコード
+            </th>
+            <th>
+                ハンディ画面
+            </th>
+            <th>
+                ハンディユーザー
+            </th>
+            <th>
+                読取日時
+            </th>
+            <th>
+                送信日時
+            </th>
+            <th>
+               エラーコード
+            </th>
+            <th>
+                エラーメッセージ
+            </th>
+            @* 入出庫画面の場合 *@
+            @if (Model.SelectedHandyPageID < (int)Enums.HandyPageID.AGFInstruction)
+			{
+                <th> 棚番1 </th>
+                <th> 棚番2 </th>
+                <th> スキャン1回目 </th>
+                <th> スキャン2回目 </th>
+			}
+@* AGF指示画面の場合 *@
+            @if (Model.SelectedHandyPageID == (int)Enums.HandyPageID.AGFInstruction)
+            {
+                <th> 荷取りST </th>
+                <th> 出荷かんばんQR </th>
+                <th> 出荷レーン </th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.ScanRecordList.Count(); ++i)
+        {
+        <tr>
+            <td class="text-center">
+                    @Html.DisplayFor(model => model.ScanRecordList[i].DepoID)
+            </td>
+            <td class="text-center">
+                    @Html.DisplayFor(model => model.ScanRecordList[i].HandyPageName)
+            </td>
+            <td class="text-center">
+                    @Html.DisplayFor(model => model.ScanRecordList[i].HandyUserName)
+            </td>
+            <td>
+                    @Html.DisplayFor(model => model.ScanRecordList[i].ScanTime)
+            </td>
+                <td class="text-center">
+                    @Html.DisplayFor(model => model.ScanRecordList[i].CreateDate)
+            </td>
+            <td class="text-center">
+                    @Html.DisplayFor(model => model.ScanRecordList[i].HandyOperationClass)
+            </td>
+            <td class="text-center">
+                    @Html.DisplayFor(model => model.ScanRecordList[i].HandyOperationMessage)
+            </td>
+@* 入出庫画面の場合 *@
+@if (Model.SelectedHandyPageID < (int)Enums.HandyPageID.AGFInstruction)
+			{
+				<td class="text-center">
+                        @Html.DisplayFor(model => model.ScanRecordList[i].ScanStoreAddress1)
+				</td>
+				<td class="text-center">
+                        @Html.DisplayFor(model => model.ScanRecordList[i].ScanStoreAddress2)
+				</td>
+				<td class="text-center">
+                        @Html.DisplayFor(model => model.ScanRecordList[i].ScanString1)
+				</td>
+				<td class="text-center">
+                        @Html.DisplayFor(model => model.ScanRecordList[i].ScanString2)
+				</td>
+			}
+@* AGF指示画面の場合 *@
+			@if (Model.SelectedHandyPageID == (int)Enums.HandyPageID.AGFInstruction)
+			{
+				<td class="text-center">
+                        @Html.DisplayFor(model => model.ScanRecordList[i].ScanString1)
+				</td>
+				<td class="text-center">
+                        @Html.DisplayFor(model => model.ScanRecordList[i].ScanString2)
+				</td>
+				<td class="text-center">
+                        @Html.DisplayFor(model => model.ScanRecordList[i].ScanString3)
+				</td>
+			}
+        </tr>
+        }
+    </tbody>
+</table>
+
+@Html.PagedListPager(
+        (IPagedList)Model.ScanRecordList,
+        page => Url.Action("SearchByPageChange", new { page }),
+        new X.PagedList.Mvc.Core.PagedListRenderOptions    //Bootstrap4を利用する場合はオプションを利用してタグにクラスを追加しないとデザインが反映されない
+        {
+            LiElementClasses = new string[] { "page-item" },
+            PageClasses = new string[] { "page-link" },
+            MaximumPageNumbersToDisplay = 10,                                                 //表示するページャーの数
+            DisplayLinkToNextPage = X.PagedList.Mvc.Common.PagedListDisplayMode.IfNeeded,      //「次へ」の非表示設定
+            DisplayLinkToPreviousPage = X.PagedList.Mvc.Common.PagedListDisplayMode.IfNeeded,   //「前へ」の非表示設定
+            DisplayLinkToFirstPage = X.PagedList.Mvc.Common.PagedListDisplayMode.IfNeeded,      //「最初へ」の非表示設定
+            DisplayLinkToLastPage = X.PagedList.Mvc.Common.PagedListDisplayMode.IfNeeded,       //「最後へ」の表示設定
+        }
+)
+<span class="page-no-label">
+    @(Model.Page.PageRowCount == 0 ? 0 : @Model.Page.PageRowStartNo) - @Model.Page.PageRowEndNo 件 / @Model.Page.PageRowCount 件中
+</span>
+
+<script>
+    $(document).ready(function () {
+
+    })
+
+</script>

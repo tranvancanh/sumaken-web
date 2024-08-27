@@ -1,0 +1,223 @@
+﻿@model D_ReceiveModel.D_ReceiveViewModel
+@using stock_management_system.common;
+@{
+    Model.GetBaseView(User, ViewContext);
+    ViewData["Title"] = Model.ViewTitle;
+}
+@{
+    ViewContext.ClientValidationEnabled = false;
+}
+<div class="h4 mb-3 text-gray-800">
+    @ViewData["Title"]
+</div>
+<div class="card shadow mb-4">
+    <div class="card-header text-gray-800">
+        新規作成
+    </div>
+    <div class="card-body">
+        <form method="post" asp-controller="D_Receive" asp-action="Create">
+            <div class="btn-header">
+                <div class="btn-headerLeft">
+                    <button id="Receive-create-btn" type="submit" class="btn btn-success btn-icon-split">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-check"></i>
+                        </span>
+                        <span class="text">保存</span>
+                    </button>
+                </div>
+                <div class="btn-headerRight">
+                    <button type="button" class="btn btn-light btn-icon-split" onclick="location.href='@Url.Action("SearchByPageBack", "D_Receive")'; return false;">
+                        <span class="icon text-white">
+                            <i class="fas fa-angle-double-left"></i>
+                        </span>
+                        <span class="text">戻る</span>
+                    </button>
+                </div>
+            </div>
+            <p>入荷日が入力されている行のみ、登録対象となります。</p>
+            <span class="message-area">
+                @ViewData["Message"]
+            </span>
+            <div class="valid-area">
+                <span class="text-danger">@ViewData["Error"] </span>
+            </div>
+            <table class="table table-responsive table-sm" style="width:100%">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th style="min-width:8rem;">
+                            <label class="required-mark">
+                                @Html.DisplayNameFor(model => model.ReceiveDate)
+                            </label>
+                        </th>
+                        <th style="min-width:10rem;">
+                            <label class="required-mark">
+                                @Html.DisplayNameFor(model => model.DepoCode)
+                            </label>
+                        </th>
+                        <th style="min-width:8rem;">
+                            <label class="required-mark">
+                                @Html.DisplayNameFor(model => model.SupplierCode)
+                            </label>
+                        </th>
+                        <th>
+                            <label>
+                                @Html.DisplayNameFor(model => model.SupplierName)
+                            </label>
+                        </th>
+                        <th>
+                            <label class="required-mark">
+                                @Html.DisplayNameFor(model => model.NextProcess1)
+                            </label>
+                        </th>
+                        <th>
+                            <label class="required-mark">
+                                @Html.DisplayNameFor(model => model.NextProcess2)
+                            </label>
+                        </th>
+                        <th>
+                            <label>
+                                @Html.DisplayNameFor(model => model.DeliverySlipNumber)
+                            </label>
+                        </th>
+                        <th style="min-width:8rem;">
+                            <label class="required-mark">
+                                @Html.DisplayNameFor(model => model.ProductCode)
+                            </label>
+                        </th>
+                        <th>
+                            <label>
+                                @Html.DisplayNameFor(model => model.ProductName)
+                            </label>
+                        </th>
+                        <th>
+                            <label class="required-mark">
+                                @Html.DisplayNameFor(model => model.Quantity)
+                            </label>
+                        </th>
+                        <th>
+                            <label class="required-mark">
+                                @Html.DisplayNameFor(model => model.PackingCount)
+                            </label>
+                        </th>
+                        <th>
+                            <label>
+                                @Html.DisplayNameFor(model => model.Packing)
+                            </label>
+                        </th>
+                        <th>
+                            <label>
+                                @Html.DisplayNameFor(model => model.Remark)
+                            </label>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        var i = 0;
+                        foreach (var item in Model.ReceiveList)
+                        {
+                            {
+                                <tr>
+                                    <td>
+                                        @if (i > 0)
+                                        {
+                                            <a href="#" class="HeaderCopyBtn" title="前列のヘッダーコピー" style="padding:0rem;color:black;" onclick="return false;">
+                                                <i class="far fa-copy"></i>
+                                            </a>
+                                        }
+                                    </td>
+                                    <td class="text-center">
+                                        <span>@(i+1)</span>
+                                        <input type="hidden" asp-for="@item.RowNo" name="ReceiveList[@i].RowNo" value="@(i+1)">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="ReceiveDate form-control datepicker" asp-for="@item.ReceiveDate" id="ReceiveDate[@i]" name="ReceiveList[@i].ReceiveDate">
+                                    </td>
+                                    <td>
+                                        <select asp-for="@item.DepoCode" asp-items="Model.DepoList" name="ReceiveList[@i].DepoCode" class="DepoCode form-control"></select>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="SupplierCode form-control Supplier_Autocomplete" asp-for="@item.SupplierCode" name="ReceiveList[@i].SupplierCode" placeholder="コードまたはカナ">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="SupplierName form-control Supplier_AutocompleteName_Table" asp-for="@item.SupplierName" name="ReceiveList[@i].SupplierName" readonly>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="NextProcess1 form-control" asp-for="@item.NextProcess1" name="ReceiveList[@i].NextProcess1">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="NextProcess2 form-control" asp-for="@item.NextProcess2" name="ReceiveList[@i].NextProcess2">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="SlipNumber form-control" asp-for="@item.DeliverySlipNumber" name="ReceiveList[@i].SlipNumber">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="ProductCode form-control Product_Autocomplete" asp-for="@item.ProductCode" name="ReceiveList[@i].ProductCode" placeholder="コードまたはカナ">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="ProductName form-control Product_AutocompleteName" asp-for="@item.ProductName" name="ReceiveList[@i].ProductName" readonly>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="ReceiveQuantity form-control" asp-for="@item.Quantity" name="ReceiveList[@i].Quantity">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="PackingCount form-control" asp-for="@item.PackingCount" name="ReceiveList[@i].PackingCount">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="Packing form-control" asp-for="@item.Packing" name="ReceiveList[@i].Packing">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="Packing form-control" asp-for="@item.Remark" name="ReceiveList[@i].Packing">
+                                    </td>
+                                </tr>
+                            }
+                            ++i;
+                        }
+                    }
+                </tbody>
+            </table>
+        </form>
+    </div>
+</div>
+
+<!--親jsファイル呼び出し-->
+<script type="text/javascript" src="~/js/site.js"></script>
+<script>
+    $(function () {
+        $('#Receive-create-btn').on('click', function () {
+            if (!confirm('登録します。よろしいですか？')) {
+                return false;
+            } else {
+                $(this).submit();
+            }
+        });
+
+        // 前列ヘッダーコピーボタン
+        $('.HeaderCopyBtn').on('click', function () {
+            var targetLine = $(this).closest('tr');
+            var targetLinePrev = $(this).closest('tr').prev('tr');
+
+            var ReceiveDate = $(targetLinePrev).find('.ReceiveDate').val();
+            $(targetLine).find('.ReceiveDate').val(ReceiveDate);
+
+            var DepoCode = $(targetLinePrev).find('.DepoCode').val();
+            $(targetLine).find('.DepoCode').val(DepoCode);
+
+            var SuppliersCode = $(targetLinePrev).find('.SupplierCode').val();
+            $(targetLine).find('.SupplierCode').val(SuppliersCode);
+
+            var NextProcess1 = $(targetLinePrev).find('.NextProcess1').val();
+            $(targetLine).find('.NextProcess1').val(NextProcess1);
+
+            var NextProcess2 = $(targetLinePrev).find('.NextProcess2').val();
+            $(targetLine).find('.NextProcess2').val(NextProcess2);
+
+            var SlipNumber = $(targetLinePrev).find('.SlipNumber').val();
+            $(targetLine).find('.SlipNumber').val(SlipNumber);
+
+        })
+
+    });
+</script>

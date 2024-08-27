@@ -1,0 +1,158 @@
+﻿@model D_StoreInModel.D_StoreInViewModel
+@using stock_management_system.common;
+@{
+    Model.GetBaseView(User, ViewContext);
+    ViewData["Title"] = Model.ViewTitle;
+}
+@{
+    ViewContext.ClientValidationEnabled = false;
+}
+<div class="h4 mb-3 text-gray-800">
+    @ViewData["Title"]
+</div>
+<div class="card shadow mb-4">
+    <div class="card-header text-gray-800">
+        新規作成
+    </div>
+    <div class="card-body">
+        <form method="post" asp-controller="D_StoreIn" asp-action="Create">
+            <div class="btn-header">
+                <div class="btn-headerLeft">
+                    <button id="StoreIn-create-btn" type="submit" class="btn btn-success btn-icon-split">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-check"></i>
+                        </span>
+                        <span class="text">保存</span>
+                    </button>
+                </div>
+                <div class="btn-headerRight">
+                    <button type="button" class="btn btn-light btn-icon-split" onclick="location.href='@Url.Action("SearchByPageBack", "D_StoreIn")'; return false;">
+                        <span class="icon text-white">
+                            <i class="fas fa-angle-double-left"></i>
+                        </span>
+                        <span class="text">戻る</span>
+                    </button>
+                </div>
+            </div>
+            <p>入庫日が入力されている行のみ、登録対象となります。</p>
+            <span class="message-area">
+                <span class="text-success">@ViewData["Message"]</span>
+            </span>
+            <div class="valid-area">
+                <span class="text-danger">@ViewData["Error"]</span>
+            </div>
+            <table class="table table-responsive table-sm" style="width:100%">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th style="min-width:8rem;">
+                            <label class="required-mark">
+                                @Html.DisplayNameFor(model => model.StoreInDate)
+                            </label>
+                        </th>
+                        <th style="min-width:10rem;">
+                            <label class="required-mark">
+                                @Html.DisplayNameFor(model => model.DepoCode)
+                            </label>
+                        </th>
+                        <th style="min-width:8rem;">
+                            <label class="required-mark">
+                                @Html.DisplayNameFor(model => model.ProductCode)
+                            </label>
+                        </th>
+                        <th>
+                            <label class="required-mark">
+                                @Html.DisplayNameFor(model => model.PackingCount)
+                            </label>
+                        </th>
+                        <th>
+                            <label class="required-mark">
+                                @Html.DisplayNameFor(model => model.Quantity)
+                            </label>
+                        </th>
+                        <th>
+                            <label class="required-mark">
+                                @Html.DisplayNameFor(model => model.StockLocation1)
+                            </label>
+                        </th>
+                        <th>
+                            <label class="required-mark">
+                                @Html.DisplayNameFor(model => model.StockLocation2)
+                            </label>
+                        </th>
+                        <th>
+                            <label>
+                                @Html.DisplayNameFor(model => model.Packing)
+                            </label>
+                        </th>
+                        <th>
+                            <label>
+                                @Html.DisplayNameFor(model => model.Remark)
+                            </label>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        var i = 0;
+                        foreach (var item in Model.StoreInList)
+                        {
+                            {
+                                <tr>
+                                    <td class="text-center">
+                                        <span>@(i+1)</span>
+                                        <input type="hidden" value="@item.RowNo" name="StoreInList[@i].RowNo" value="@(i+1)">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="StoreInDate form-control datepicker" value="@item.StoreInDate" id="StoreInDate[@i]" name="StoreInList[@i].StoreInDate">
+                                    </td>
+                                    <td>
+                                        <select value="@item.DepoID" asp-items="Model.DepoList" name="StoreInList[@i].DepoID" class="DepoID form-control"></select>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="ProductCode form-control Product_Autocomplete" value="@item.ProductCode" name="StoreInList[@i].ProductCode" placeholder="コードまたはカナ">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="PackingCount form-control" value="@item.PackingCount" name="StoreInList[@i].PackingCount">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="Quantity form-control" value="@item.Quantity" name="StoreInList[@i].Quantity">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="StockLocation1 form-control" value="@item.StockLocation1" name="StoreInList[@i].StockLocation1">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="StockLocation2 form-control" value="@item.StockLocation2" name="StoreInList[@i].StockLocation2">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="Packing form-control" value="@item.Packing" name="StoreInList[@i].Packing">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="Remark form-control" value="@item.Remark" name="StoreInList[@i].Remark">
+                                    </td>
+                                </tr>
+                            }
+                            ++i;
+                        }
+                    }
+                </tbody>
+            </table>
+        </form>
+    </div>
+</div>
+
+<!--親jsファイル呼び出し-->
+<script type="text/javascript" src="~/js/site.js"></script>
+<script src="~/js/D_StoreIn/Create.js" asp-append-version="true"></script>
+<script>
+    $(function () {
+        $('#StoreIn-create-btn').on('click', function () {
+            if (!confirm('登録します。よろしいですか？')) {
+                return false;
+            } else {
+                $(this).submit();
+            }
+        });
+
+    });
+</script>

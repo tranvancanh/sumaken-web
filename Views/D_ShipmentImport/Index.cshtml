@@ -1,0 +1,264 @@
+﻿@using System.Security.Claims
+@using System;
+@using System.Globalization;
+@model D_ShipmentImportViewModel
+@{
+    Model.GetBaseView(User, ViewContext);
+    ViewData["Title"] = Model.ViewTitle;
+}
+
+@*<link href="~/css/calendar.css" rel="stylesheet">*@
+<style>
+    .card {
+        max-width: 800px !important;
+        min-width: 300px !important;
+    }
+
+    .explain-area {
+        position: relative;
+        margin: 1.5rem 0.5rem 1rem 0.5rem;
+        padding: 0.5em 0.5em 0.5em 0em;
+        border: solid 3px #eaecf4;
+        display: inline-block;
+    }
+
+        .explain-area .box-title {
+            position: absolute;
+            display: inline-block;
+            top: -27px;
+            left: -3px;
+            padding: 0 9px;
+            height: 25px;
+            line-height: 25px;
+            font-size: 14px;
+            background: #f8f9fc;
+            color: #000000;
+            font-weight: bold;
+            border-radius: 5px 5px 0 0;
+        }
+
+        .explain-area p {
+            font-size: 13px;
+            margin: 0.3rem;
+        }
+</style>
+<div class="row">
+    <div class="col">
+        <div class="h4 mb-3 text-gray-800">
+            @ViewData["Title"]
+        </div>
+        <div class="card shadow mb-4">
+            <div class="card-header text-gray-800">
+                取込
+            </div>
+            <div class="card-body">
+                <form id="d-shipmentimport-form" method="post" enctype="multipart/form-data" asp-controller="D_ShipmentImport" asp-action="Index">
+                    <p class="mb-3">実績データの取込を行います。</p>
+                    <div class="form-row">
+@*                        <div class="p-2" style="width:200px;">
+                            <label asp-for="DepoList"></label>
+                            <select asp-for="DepoID" asp-items="Model.DepoList" name="DepoID" class="DepoID form-control"></select>                            
+                        </div>*@
+                        <div class="p-2" style="width:300px;">
+                            <label asp-for="PatternList"></label>
+                            <select asp-for="PatternID" asp-items="Model.PatternList" name="PatternID" class="PatternID form-control"></select>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="text-danger error-text">@ViewData["Error"] </span>
+                        <span class="text-success msg-text">@ViewData["Message"] </span>
+                    </div>
+                    <div class="form-group text-center p-2">
+                        <div class="form-inline p-2 rounded" style="background-color: #f8f9fc; ">
+                            <label id="file-label" class="btn btn-secondary">
+                                <input style="display:none;" asp-for="PostedFile" type="file"
+                                       accept="text/plain,text/csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,.csv" />
+                                取込ファイル選択
+                            </label>
+                            <label class="file-name-view ml-2"></label>
+                            @*<input type="hidden" asp-for="@Model.FileName" />*@
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12 form-inline">
+@*                        <div class="col">
+                            <button type="submit" asp-action="ExcelOutput" value="出力" class="btn btn-primary btn-icon-split">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-file-export fa-fw"></i>
+                                </span>
+                                <span class="text">出力</span>
+                            </button>
+                        </div>*@
+                        <div class="col text-right">
+                            <button value="取込" id="ShipmentImportSubmitButton" class="btn btn-success btn-icon-split" onclick="MProductLabelConfirm(); return false;">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-file-import fa-fw"></i>
+                                </span>
+                                <span class="text">取込</span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <div class="pt-5">
+                    <p>取込履歴（直近1か月）</p>
+                    <table class="sticky_table table-hover-event" style="height:20rem;">
+                        <thead class="table-light">
+                            <tr>
+                                <th style="min-width:100%!important;max-width:100%!important">
+                                    @Html.DisplayNameFor(model => model.ImportedDatas[0].DepoName)
+                                </th>
+                                <th style="min-width:100%!important;max-width:100%!important">
+                                    @Html.DisplayNameFor(model => model.ImportedDatas[0].ImportFileName)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.ImportedDatas[0].DataCount)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.ImportedDatas[0].FirstImportLogHandyScanDate)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.ImportedDatas[0].LastImportLogHandyScanDate)
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.ImportedDatas.Count(); ++i)
+                            {
+                                <tr>
+                                    <td class="text-center" style="min-width:100%!important;max-width:100%!important">
+                                        @Html.DisplayFor(model => model.ImportedDatas[i].DepoName)
+                                    </td>
+                                    <td class="text-center" style="min-width:100%!important;max-width:100%!important">
+                                        @Html.DisplayFor(model => model.ImportedDatas[i].ImportFileName)
+                                    </td>
+                                    <td class="text-center" style="min-width:100%!important;max-width:100%!important">
+                                        @Html.DisplayFor(model => model.ImportedDatas[i].DataCount)
+                                    </td>
+                                    <td class="text-center">
+                                        <span>
+                                            @Model.ImportedDatas[i].FirstImportLogHandyScanDate.ToString("yyyy/MM/dd（ddd） HH:mm:ss", new CultureInfo("ja-JP"))
+                                        </span>
+                                        @*@Html.DisplayFor(model => model.ImportedDatas[i].FirstImportLogHandyScanDate)*@
+                                    </td>
+                                    <td class="text-center">
+                                        <label>
+                                            @Model.ImportedDatas[i].LastImportLogHandyScanDate.ToString("yyyy/MM/dd（ddd） HH:mm:ss", new CultureInfo("ja-JP"))
+                                        </label>
+                                        @*@Html.DisplayFor(model => model.ImportedDatas[i].LastImportLogHandyScanDate)*@
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--親jsファイル呼び出し-->
+<script type="text/javascript" src="~/js/site.js"></script>
+@*<script type="text/javascript" src="~/js/calendar.js"></script>*@
+@section Scripts {
+    <script type="text/javascript">
+        $(function () {
+
+            ClearUrlGet();
+
+            // ページ開いたらファイル名セット
+            FileNameSet($('#file-label input'));
+
+            // ファイル選択input内容が変化したら、メッセージ削除＆ファイル名をセットする
+            $('#file-label input').on('change', function () {
+
+                FormDataCheck();
+
+                var self = $(this);
+                FileNameSet(self);
+
+            });
+        
+        });
+
+        var fileNameDefault = "ここに選択したファイル名が表示されます";
+
+        function FileNameSet(self) {
+
+            var files = self.prop('files');
+
+            if (files.length > 0) {
+                var file = files[0];
+                console.log(file);
+                var fileName = file.name;
+                $('.file-name-view').text(fileName);
+            }
+            else {
+                $('.file-name-view').text(fileNameDefault);
+            }
+
+            $('.file-name-view').text(fileName);
+        }
+
+        function MProductFormSubmit() {
+            $("#d-shipmentimport-form").submit();
+        }
+
+        async  function MProductLabelConfirm() {
+
+            //$("#ShipmentImportSubmitButton").prop('disabled', true);
+
+            const result = await FormDataCheck();
+            if (!result) {
+                //$("#ShipmentImportSubmitButton").prop('disabled', false);
+            }
+
+            if (result) {
+                $("#confirm-modal-body").html("<p>取込を実行してよろしいですか？</p>");
+                $("#confirm-modal-run-btn").attr("onclick", "MProductFormSubmit();return false;");
+
+                $('#confirmModal').modal('show');
+            }
+            else{
+                //$("#ShipmentImportSubmitButton").prop('disabled', false);
+            }
+        }
+
+        function FormClear() {
+            $('.file-name-view').text(fileNameDefault);
+
+            var form = document.querySelector("#d-shipmentimport-form");
+            form.reset();
+        }
+
+        function FormDataCheck() {
+
+            $('.error-text').text("");
+            $('.msg-text').text("");
+
+            // FormData オブジェクトの利用
+            var formData = new FormData(document.querySelector("#d-shipmentimport-form"));
+
+            for (var file of formData) {
+                console.log(file);
+                if (file[0] == "PostedFile") {
+                    if (file[1]["size"] <= 0) {
+                        $('.error-text').text('ファイルが選択されていません。');
+                        FormClear(formData);
+                        return false;
+                    }
+                    else if (file[1]["name"].indexOf('.xls') <= 0 && file[1]["name"].indexOf('.xlsx') <= 0 && file[1]["name"].indexOf('.csv') <= 0) {
+                        $('.error-text').text('取込対象外の拡張子です。');
+                        FormClear(formData);
+                        return false;
+                    }
+
+                }
+
+            }
+
+            return true;
+        }
+
+    </script>
+}
+

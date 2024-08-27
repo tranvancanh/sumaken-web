@@ -1,0 +1,152 @@
+﻿@model D_StoreInModel.D_StoreInSearchModel
+
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+
+<style>
+    td {
+        vertical-align: middle !important;
+    }
+    .page-no-label {
+        font-weight:600!important;
+        font-size:13px;
+    }
+    .pagination {
+        margin-top: 0.5em !important;
+        margin-bottom: 0em !important;
+    }
+    .text-ellipsis {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+</style>
+
+<table class="sticky_table table-hover-evant">
+    <thead>
+        <tr>
+            <th class="table-icon-edit"></th>
+            <th>
+                @Html.DisplayNameFor(model => model.StoreInList[0].StoreInDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StoreInList[0].ProductCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StoreInList[0].Quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StoreInList[0].PackingCount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StoreInList[0].StockLocation1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StoreInList[0].StockLocation2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StoreInList[0].Packing)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StoreInList[0].Remark)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StoreInList[0].CreateDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StoreInList[0].CreateUserCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StoreInList[0].CreateHandyUserCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StoreInList[0].UpdateDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StoreInList[0].UpdateUserCode)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.StoreInList.Count(); ++i)
+        {
+            <tr id="@("tr" + @Model.StoreInList[i].StoreInID)">
+                <td class="table-icon-edit">
+                    @*                <span onclick="location.href='@Url.Action("Edit", "D_StoreIn" , new { id = Model.StoreInList[i].StoreInID })'; return false;">
+                <i class="fas fa-edit"></i>
+                </span>*@
+                    <button class="btn edit-icon-btn" onclick="EditView('@Model.StoreInList[i].StoreInID')" ; return false;">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(model => model.StoreInList[i].StoreInDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.StoreInList[i].ProductCode)
+                </td>
+                <td class="text-right">
+                    @string.Format("{0:#,0}", Model.StoreInList[i].Quantity)
+                </td>
+                <td class="text-right">
+                    @string.Format("{0:#,0}", Model.StoreInList[i].PackingCount)
+                </td>
+                @*            <td class="text-right">
+            @string.Format("{0:#,0}", Model.StoreInList[i].Quantity)
+            </td>*@
+                <td class="text-center">
+                    @Html.DisplayFor(model => model.StoreInList[i].StockLocation1)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(model => model.StoreInList[i].StockLocation2)
+                </td>
+                <td>
+                    @string.Format("{0:#,0}", Model.StoreInList[i].Packing)
+                </td>
+                <td class="text-ellipsis" title="@Model.StoreInList[i].Remark">
+                    @Html.DisplayFor(model => model.StoreInList[i].Remark)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.StoreInList[i].CreateDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.StoreInList[i].CreateUserCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.StoreInList[i].CreateHandyUserCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.StoreInList[i].UpdateDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.StoreInList[i].UpdateUserCode)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@Html.PagedListPager(
+        (IPagedList)Model.StoreInList,
+        page => Url.Action("SearchByPageChange", new { page }),
+        new X.PagedList.Mvc.Core.PagedListRenderOptions    //Bootstrap4を利用する場合はオプションを利用してタグにクラスを追加しないとデザインが反映されない
+        {
+            LiElementClasses = new string[] { "page-item" },
+            PageClasses = new string[] { "page-link" },
+            MaximumPageNumbersToDisplay = 10,                                                 //表示するページャーの数
+            DisplayLinkToNextPage = X.PagedList.Mvc.Common.PagedListDisplayMode.IfNeeded,      //「次へ」の非表示設定
+            DisplayLinkToPreviousPage = X.PagedList.Mvc.Common.PagedListDisplayMode.IfNeeded,   //「前へ」の非表示設定
+            DisplayLinkToFirstPage = X.PagedList.Mvc.Common.PagedListDisplayMode.IfNeeded,      //「最初へ」の非表示設定
+            DisplayLinkToLastPage = X.PagedList.Mvc.Common.PagedListDisplayMode.IfNeeded,       //「最後へ」の表示設定
+        }
+)
+<span class="page-no-label">
+    @(Model.Page.PageRowCount == 0 ? 0 : @Model.Page.PageRowStartNo) - @Model.Page.PageRowEndNo 件 / @Model.Page.PageRowCount 件中
+</span>
+
+<script>
+    $(document).ready(function () {
+
+    })
+
+</script>

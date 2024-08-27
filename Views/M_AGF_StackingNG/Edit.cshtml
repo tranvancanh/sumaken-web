@@ -1,0 +1,56 @@
+﻿@model stock_management_system.Models.M_AGF_StackingNGModel
+@{
+    Layout = null;
+}
+
+<head>
+    <style>
+    </style>
+</head>
+
+<!-- Modal -->
+<div class="modal fade" id="editstackingngmanagament" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title w-100 text-center position-absolute font-weight-bold">削除</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>             <!--Modal Header End-->
+            <div class="modal-body">
+                <form method="post" asp-controller="M_AGF_StackingNG" asp-action="Edit" enctype="multipart/form-data" autocomplete="on"
+                      data-ajax="true" data-ajax-update="formDetails">
+                    @Html.AntiForgeryToken()
+                    <span class="text-danger">@ViewData["Error"] </span>
+                    <div class="modal-body m">
+                        <div class="form-group">
+                            <label>部品番号</label>
+                            <input asp-for="@Model.ProductCode" name="ProductCode" class="form-control" id="product_codeEdit" type="text" readonly />
+                           </div>
+                        @* 非表示 *@
+                        <div hidden class="form-group">
+                            <label>デポコード</label>
+                            <input asp-for="@Model.DepoCode" name="DepoCode" class="form-control" id="depo_codeEdit" type="number" />
+                        </div>
+                        <div hidden class="form-group">
+                            <label>old部品番号</label>
+                            <input asp-for="@Model.OldProductCode" name="OldProductCode" class="form-control" id="old_customer_codeEdit" type="text" />
+                        </div>
+                        <!--Modal Footer Start-->
+                        <div class="modal-footer mt-3">
+                            <button class="btn btn-danger col" type="submit">削除</button>
+                            <button class="btn btn-secondary col" type="button" onclick="EditStackingNGCancelSubmit()">キャンセル</button>
+                        </div>  <!--Modal Footer End-->
+                    </div>
+                </form>
+            </div>             <!--Modal Body End-->
+        </div>
+    </div>
+</div>
+<!--Modal Body End-->
+@*
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+}*@

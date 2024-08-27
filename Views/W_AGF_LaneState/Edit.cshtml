@@ -1,0 +1,56 @@
+﻿@model stock_management_system.Models.W_AGF_LaneStateModel
+@{
+    Layout = null;
+}
+
+<head>
+    <style>
+    </style>
+</head>
+
+<!-- Modal -->
+<div class="modal fade" id="editlanestatemanagament" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title w-100 text-center position-absolute font-weight-bold">修正</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>             <!--Modal Header End-->
+            <div class="modal-body">
+                <form method="post" asp-controller="W_AGF_LaneState" asp-action="Edit" enctype="multipart/form-data" autocomplete="on"
+                      data-ajax="true" data-ajax-update="formDetails">
+                    @Html.AntiForgeryToken()
+                    <span class="text-danger">@ViewData["Error"] </span>
+                    <div class="modal-body m">
+                        <div class="form-group">
+                            <label>レーン番号</label>
+                            <input asp-for="@Model.LaneNo" name="LaneNo" class="form-control" id="lane_noEdit" type="text" readonly />
+                        </div>
+                        <div class="form-group">
+                            <label>レーン番地</label>
+                            <input asp-for="@Model.LaneAddress" name="LaneAddress" class="form-control" id="lane_addressEdit" type="text" readonly />
+                        </div>
+                        <div  class="form-group">
+                            <label>状態</label>
+                            <select asp-for="State" asp-items="Model.StateList" name="State" class="form-control">
+                            </select>
+                        </div>
+                        <!--Modal Footer Start-->
+                        <div class="modal-footer mt-5">
+                            <button class="btn btn-success col" type="submit">保存</button>
+                            <button class="btn btn-secondary col" type="button" onclick="EditLaneStateCancelSubmit()">キャンセル</button>
+                        </div>  <!--Modal Footer End-->
+                    </div>
+                </form>
+            </div>             <!--Modal Body End-->
+        </div>
+    </div>
+</div>
+<!--Modal Body End-->
+@*
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+}*@

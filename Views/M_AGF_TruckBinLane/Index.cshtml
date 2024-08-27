@@ -1,0 +1,132 @@
+﻿@using System.Security.Claims
+@model stock_management_system.Models.M_AGF_TruckBinLaneModel.M_AGF_TruckBinLaneViewModel
+
+@{
+	Model.GetBaseView(User, ViewContext);
+	ViewData["Title"] = Model.ViewTitle;
+}
+<head>
+	<style>
+	</style>
+</head>
+<div class="h4 mb-3 text-gray-800">
+	@ViewData["Title"]
+</div>
+
+<div id="truckbinmanagamentmodify"></div>
+<div class="card shadow">
+	<div class="card-header text-gray-800">
+		検索
+	</div>
+	<div class="card-body">
+		<div class="row">
+			<div class="col-md-12">
+				<form enctype="multipart/form-data" method="post" asp-controller="M_AGF_TruckBinLane" asp-action="Index">
+					<div class="form-row p-2">
+						<div class="form-group">
+							<label>運送会社名称</label>
+							<select asp-for="TruckBinCode" asp-items="@Model.TruckBinNameList" name="TruckBinCode" class="form-control">
+								<option value="null">全て</option>
+							</select>
+						</div>
+						<div class="form-row p-2">
+							<form class="form-inline" method="post" asp-controller="M_AGF_TruckBinLane" asp-action="Index">
+								<div class="p-3" style="max-width:200px;">
+									<button type="submit" id="ReciptSerchBtn" class="btn btn-primary btn-icon-split" value="search">
+										<span class="icon text-white-50">
+											<i class="fas fa-search fa-fw"></i>
+										</span>
+										<span class="text">検索</span>
+									</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="p-2">
+			<span class="text-danger">@ViewData["Error"] </span>
+			<span class="text-success">@ViewData["Message"] </span>
+		</div>
+		<div class="agf-add-btn py-2">
+			<button type="button" class="btn btn-secondary btn-icon-split" data-toggle="modal" onclick="ImportTruckBinSubmitAjax()">
+				<span class="icon text-white-50">
+					<i class="fas fa-plus"></i>
+				</span>
+				<span class="text">追加</span>
+			</button>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<table class="sticky_table  table-hover-evant">
+					<thead>
+						<tr>
+							<th class="table-icon-edit"></th>
+							<th>運送会社コード</th>
+							<th>運送会社名称</th>
+							<th>レーン</th>
+							<th>グループ番号</th>
+							<th>最終更新日</th>
+							<th>最終更新者</th>
+						</tr>
+					</thead>
+					<tbody>
+						@if (@Model != null && @Model.TruckBinSearchList != null)
+						{
+							@foreach (var obj in @Model.TruckBinSearchList)
+							{
+								<tr>
+									<td class="table-icon-edit">
+										<button type="button" class="btn btn-light btn-square" data-toggle="modal" onclick="EditTruckBinSubmitAjax(truckBinCode = '@obj.TruckBinCode' ,laneNo='@obj.LaneNo', lanegroupID='@obj.LaneGroupID',oldLaneNo='@obj.OldLaneNo',oldLaneGroupID='@obj.OldLaneGroupID'  )">
+											<i class="fas fa-edit"></i>
+										</button>
+									</td>
+									<td>@obj.TruckBinCode</td>
+									<td>@obj.TruckBinName</td>
+									<td>@obj.LaneNo</td>
+									<td>@obj.LaneGroupID</td>
+									<td>
+										@if (obj.LastUpdateDateTime.Contains("1900"))
+										{
+											@:-
+										}
+										else
+										{
+											@obj.LastUpdateDateTime
+										}
+									</td>
+									<td>
+										@if (obj.LastUpdateUserName == null)
+										{
+											@:-
+										}
+										else
+										{
+											@obj.LastUpdateUserName
+										}
+									<td hidden>@obj.OldLaneNo</td>
+									<td hidden>@obj.OldLaneGroupID</td>
+								</tr>
+							}
+						}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<br />
+<br />
+
+@section Scripts {
+	@*@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}*@
+	<script src="~/js/M_AGF_TruckBinLane/Index.js" asp-append-version="true"></script>
+	<script type="text/javascript">
+		let ROOT = '@Url.Content("~")';
+		$(document).ready(function () {
+
+		});
+	</script>
+
+}

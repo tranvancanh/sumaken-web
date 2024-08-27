@@ -1,0 +1,213 @@
+﻿@model D_ReceiveModel.D_ReceiveSearchModel
+
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+
+<style>
+    td {
+        vertical-align: middle !important;
+    }
+    .page-no-label {
+        font-weight:600!important;
+        font-size:13px;
+    }
+    .pagination {
+        margin-top: 0.5em !important;
+        margin-bottom: 0em !important;
+    }
+    .text-ellipsis {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+</style>
+
+<table class="sticky_table  table-hover-event">
+    <thead>
+        <tr>
+@*            <th class="table-button"></th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.ReceiveList[0].ReceiveDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReceiveList[0].DeliveryDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReceiveList[0].DeliveryTimeClass)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReceiveList[0].SupplierCode)
+            </th>
+@*            <th>
+                @Html.DisplayNameFor(model => model.ReceiveList[0].SupplierClass)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.ReceiveList[0].SupplierName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReceiveList[0].NextProcess1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReceiveList[0].Location1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReceiveList[0].NextProcess2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReceiveList[0].DeliverySlipNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReceiveList[0].ProductLabelBranchNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReceiveList[0].ProductCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReceiveList[0].ProductAbbreviation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReceiveList[0].LotQuantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReceiveList[0].PackingCount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReceiveList[0].Quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReceiveList[0].Packing)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReceiveList[0].Remark)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReceiveList[0].CreateUserCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReceiveList[0].CreateHandyUserCode)
+            </th>
+            <th style="min-width:120px;">
+                @Html.DisplayNameFor(model => model.ReceiveList[0].ScanTime)
+            </th>
+            <th style="min-width:120px;">
+                @Html.DisplayNameFor(model => model.ReceiveList[0].CreateDate)
+            </th>
+@*            <th>
+                @Html.DisplayNameFor(model => model.ReceiveList[0].UpdateUser)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReceiveList[0].UpdateDate)
+            </th>*@
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.ReceiveList.Count(); ++i)
+        {
+        <tr>
+@*            <td class="table-button">
+                <button type="button" class="btn btn-light btn-circle"
+                        onclick="location.href='@Url.Action("Edit", "D_Receive" , new { id = Model.ReceiveList[i].ReceiveID })'; return false;">
+                    <i class="fas fa-edit"></i>
+                </button>
+            </td>*@
+            <td class="text-center">
+                @Html.DisplayFor(model => model.ReceiveList[i].ReceiveDate)
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(model => model.ReceiveList[i].DeliveryDate)
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(model => model.ReceiveList[i].DeliveryTimeClass)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.ReceiveList[i].SupplierCode)
+            </td>
+@*            <td>
+                @Html.DisplayFor(model => model.ReceiveList[i].SupplierClass)
+            </td>*@
+                <td class="text-ellipsis" title="@Model.ReceiveList[i].SupplierName">
+                @Html.DisplayFor(model => model.ReceiveList[i].SupplierName)
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(model => model.ReceiveList[i].NextProcess1)
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(model => model.ReceiveList[i].Location1)
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(model => model.ReceiveList[i].NextProcess2)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.ReceiveList[i].DeliverySlipNumber)
+            </td>
+            <td class="text-right">
+                @Html.DisplayFor(model => model.ReceiveList[i].ProductLabelBranchNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.ReceiveList[i].ProductCode)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.ReceiveList[i].ProductAbbreviation)
+            </td>
+            <td class="text-right">
+                @string.Format("{0:#,0}", Model.ReceiveList[i].LotQuantity)
+            </td>
+            <td class="text-right">
+                @string.Format("{0:#,0}", Model.ReceiveList[i].PackingCount)
+            </td>
+            <td class="text-right">
+                @string.Format("{0:#,0}", Model.ReceiveList[i].Quantity)
+            </td>
+            <td>
+                @string.Format("{0:#,0}", Model.ReceiveList[i].Packing)
+            </td>
+            <td class="text-ellipsis" title="@Model.ReceiveList[i].Remark">
+                @Html.DisplayFor(model => model.ReceiveList[i].Remark)
+            </td>
+            <td>
+                    @Html.DisplayFor(model => model.ReceiveList[i].CreateUserCode)
+            </td>
+            <td>
+                    @Html.DisplayFor(model => model.ReceiveList[i].CreateHandyUserCode)
+            </td>
+            <td>
+                    @Html.DisplayFor(model => model.ReceiveList[i].ScanTime)
+            </td>
+            <td>
+                    @Html.DisplayFor(model => model.ReceiveList[i].CreateDate)
+            </td>
+@*            <td>
+                @Html.DisplayFor(model => model.ReceiveList[i].UpdateUser)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.ReceiveList[i].UpdateDate)
+            </td>*@
+        </tr>
+        }
+    </tbody>
+</table>
+
+@Html.PagedListPager(
+        (IPagedList)Model.ReceiveList,
+        page => Url.Action("SearchByPageChange", new { page }),
+        new X.PagedList.Mvc.Core.PagedListRenderOptions    //Bootstrap4を利用する場合はオプションを利用してタグにクラスを追加しないとデザインが反映されない
+        {
+            LiElementClasses = new string[] { "page-item" },
+            PageClasses = new string[] { "page-link" },
+            MaximumPageNumbersToDisplay = 10,                                                 //表示するページャーの数
+            DisplayLinkToNextPage = X.PagedList.Mvc.Common.PagedListDisplayMode.IfNeeded,      //「次へ」の非表示設定
+            DisplayLinkToPreviousPage = X.PagedList.Mvc.Common.PagedListDisplayMode.IfNeeded,   //「前へ」の非表示設定
+            DisplayLinkToFirstPage = X.PagedList.Mvc.Common.PagedListDisplayMode.IfNeeded,      //「最初へ」の非表示設定
+            DisplayLinkToLastPage = X.PagedList.Mvc.Common.PagedListDisplayMode.IfNeeded,       //「最後へ」の表示設定
+        }
+)
+<span class="page-no-label">
+    @(Model.Page.PageRowCount == 0 ? 0 : @Model.Page.PageRowStartNo) - @Model.Page.PageRowEndNo 件 / @Model.Page.PageRowCount 件中
+</span>
+
+<script>
+    $(document).ready(function () {
+
+    })
+
+</script>

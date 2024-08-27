@@ -1,0 +1,185 @@
+﻿@model D_ReceiveModel.D_ReceiveViewModel
+@using stock_management_system.common;
+@{
+    Model.GetBaseView(User, ViewContext);
+    ViewData["Title"] = Model.ViewTitle;
+}
+<style>
+    .card {
+        min-width: 300px !important;
+        max-width: 800px !important;
+    }
+</style>
+<div class="h4 mb-3 text-gray-800">
+    @ViewData["Title"]
+</div>
+<div class="card shadow mb-4">
+    <div class="card-header text-gray-800">
+        修正
+    </div>
+    <div class="card-body">
+        <form class="col-md-12" method="post" asp-controller="D_Receive" asp-action="Edit">
+            <div class="btn-header">
+                <div class="btn-headerLeft">
+
+                </div>
+                <div class="btn-headerRight">
+                    <button type="button" class="btn btn-light btn-icon-split" onclick="location.href='@Url.Action("SearchByPageBack", "D_Receive")'; return false;">
+                        <span class="icon text-white">
+                            <i class="fas fa-angle-double-left"></i>
+                        </span>
+                        <span class="text">戻る</span>
+                    </button>
+                </div>
+            </div>
+            <span class="message-area">
+                @ViewData["Message"]
+            </span>
+            <div class="valid-area">
+                <span class="text-danger">@ViewData["Error"] </span>
+            </div>
+            <fieldset>
+                <div class="form-row">
+                    <div class="p-2" style="width:300px;">
+                        <label class="required-mark">@Html.DisplayNameFor(model => model.ReceiveDate)</label>
+                        <input type="text" asp-for="ReceiveDate" class="form-control datepicker">
+                        <input type="hidden" asp-for="ReceiveDate">
+                        <span asp-validation-for="ReceiveDate" class="text-danger"></span>
+                    </div>
+
+                    <div class="p-2" style="width:300px;">
+                        <label class="required-mark">@Html.DisplayNameFor(model => model.DepoCode)</label>
+                        <select asp-for="DepoCode" asp-items="Model.DepoList" name="DepoCode" class="DepoCode form-control"></select>
+                        <span asp-validation-for="DepoCode" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-row">
+
+                    <div class="p-2" style="width:300px;">
+                        <label class="required-mark">@Html.DisplayNameFor(model => model.SupplierCode)</label>
+                        <input type="text" asp-for="SupplierCode" class="form-control Supplier_Autocomplete">
+                        <input type="hidden" asp-for="SupplierCode">
+                        <span asp-validation-for="SupplierCode" class="text-danger"></span>
+                    </div>
+
+                    <div class="p-2" style="width:300px;">
+                        <label>@Html.DisplayNameFor(model => model.SupplierName)</label>
+                        <input type="text" asp-for="SupplierName" class="form-control Supplier_AutocompleteName_Form" disabled>
+                        <input type="hidden" asp-for="SupplierName">
+                    </div>
+
+                </div>
+                <div class="form-row">
+
+                    <div class="p-2" style="width:300px;">
+                        <label class="required-mark">@Html.DisplayNameFor(model => model.NextProcess1)</label>
+                        <input type="text" asp-for="NextProcess1" class="form-control">
+                        <input type="hidden" asp-for="NextProcess1">
+                        <span asp-validation-for="NextProcess1" class="text-danger"></span>
+                    </div>
+
+                    <div class="p-2" style="width:300px;">
+                        <label class="required-mark">@Html.DisplayNameFor(model => model.NextProcess2)</label>
+                        <input type="text" asp-for="NextProcess2" class="form-control">
+                        <input type="hidden" asp-for="NextProcess2">
+                        <span asp-validation-for="NextProcess2" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-row">
+
+                    <div class="p-2" style="width:300px;">
+                        <label>@Html.DisplayNameFor(model => model.DeliverySlipNumber)</label>
+                        <input type="text" asp-for="DeliverySlipNumber" class="form-control">
+                        <span asp-validation-for="DeliverySlipNumber" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-row">
+
+                    <div class="p-2" style="width:300px;">
+                        <label class="required-mark">@Html.DisplayNameFor(model => model.ProductCode)</label>
+                        <input type="text" asp-for="ProductCode" class="form-control Product_Autocomplete" placeholder="コードまたはカナ">
+                        <span asp-validation-for="ProductCode" class="text-danger"></span>
+                    </div>
+
+                    <div class="p-2" style="width:300px;">
+                        <label>@Html.DisplayNameFor(model => model.ProductName)</label>
+                        <input type="text" asp-for="ProductName" class="form-control Product_AutocompleteName" disabled>
+                        <input type="hidden" asp-for="ProductName">
+                    </div>
+
+                </div>
+                <div class="form-row">
+
+                    <div class="p-2" style="width:300px;">
+                        <label class="required-mark">@Html.DisplayNameFor(model => model.Quantity)</label>
+                        <input type="number" asp-for="Quantity" class="form-control text-right">
+                        <span asp-validation-for="Quantity" class="text-danger"></span>
+                    </div>
+
+                    <div class="p-2" style="width:300px;">
+                        <label class="required-mark">@Html.DisplayNameFor(model => model.PackingCount)</label>
+                        <input type="number" asp-for="PackingCount" class="form-control text-right">
+                        <span asp-validation-for="PackingCount" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-row">
+
+                    <div class="p-2" style="width:300px;">
+                        <label>@Html.DisplayNameFor(model => model.Packing)</label>
+                        <input type="text" asp-for="Packing" class="form-control">
+                        <input type="hidden" asp-for="Packing">
+                    </div>
+
+                    <div class="p-2" style="width:300px;">
+                        <label>@Html.DisplayNameFor(model => model.Remark)</label>
+                        <input type="text" asp-for="Remark" class="form-control">
+                        <input type="hidden" asp-for="Remark">
+                    </div>
+
+                </div>
+                @Html.HiddenFor(x => x.ReceiveID)
+            </fieldset>
+            <div class="btn-header pt-5">
+                <div class="btn-headerLeft">
+                    <button type="submit" id="receipt-delete-btn" name="isDelete" value="true" class="btn btn-danger btn-icon-split">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-trash"></i>
+                        </span>
+                        <span class="text">削除</span>
+                    </button>
+                </div>
+                <div class="btn-headerRight">
+                    <button type="submit" id="receipt-edit-btn" class="btn btn-success btn-icon-split">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-check"></i>
+                        </span>
+                        <span class="text">更新</span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('#receipt-edit-btn').on('click', function () {
+            if (!confirm('更新します。よろしいですか？')) {
+                return false;
+            } else {
+                $(this).submit();
+            }
+        });
+        $('#receipt-delete-btn').on('click', function () {
+            if (!confirm('削除します。よろしいですか？')) {
+                return false;
+            } else {
+                $(this).submit();
+            }
+        });
+    });
+</script>

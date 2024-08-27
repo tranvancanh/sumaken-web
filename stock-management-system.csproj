@@ -1,0 +1,116 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace></RootNamespace>
+    <UserSecretsId>c557cf65-7493-438c-8675-41cc2ae859e5</UserSecretsId>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <WarningLevel>3</WarningLevel>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="wwwroot\UploadedFiles\**" />
+    <Content Remove="wwwroot\UploadedFiles\**" />
+    <EmbeddedResource Remove="wwwroot\UploadedFiles\**" />
+    <None Remove="wwwroot\UploadedFiles\**" />
+    <TypeScriptCompile Remove="wwwroot\UploadedFiles\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Controllers\M_AGF_TruckBinController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Views\Shared\_template.cshtml" />
+    <Content Remove="wwwroot\js\M_ReceiptImportPattern\file.tsx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="スマ検\酒倉AGFシステム_操作マニュアル%28Webアプリ%29_ver1.1.pdf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="スマ検\酒倉AGFシステム_操作マニュアル(Webアプリ)_ver1.1.pdf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CsvHelper" Version="21.2.1" />
+    <PackageReference Include="Dapper" Version="2.0.123" />
+    <PackageReference Include="EPPlus.Core" Version="1.5.4" />
+    <PackageReference Include="ExcelDataReader" Version="3.6.0" />
+    <PackageReference Include="ExcelDataReader.DataSet" Version="3.6.0" />
+    <PackageReference Include="JWT" Version="8.2.2" />
+    <PackageReference Include="JwtBuilder" Version="0.1.17" />
+    <PackageReference Include="LigerShark.WebOptimizer.Core" Version="3.0.372" />
+    <PackageReference Include="MailKit" Version="2.10.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.10" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.12.2" />
+    <PackageReference Include="Microsoft.NETCore.App" Version="2.2.8" />
+    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="4.7.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
+    <PackageReference Include="MsgPack.Cli" Version="1.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="SpreadsheetLight" Version="3.5.0" />
+    <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
+    <PackageReference Include="System.Linq" Version="4.3.0" />
+    <PackageReference Include="X.PagedList" Version="7.5.0" />
+    <PackageReference Include="X.PagedList.Mvc.Core" Version="7.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\D_ScanRecord\Index.cshtml" />
+    <None Include="Views\D_ShipmentImport\Index.cshtml" />
+    <None Include="Views\M_SystemSetting\Edit.cshtml" />
+    <None Include="Views\M_SystemSetting\Index.cshtml" />
+    <None Include="Views\Shared\_template.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="iTextAsian">
+      <HintPath>report\iTextAsian.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp">
+      <HintPath>report\itextsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="systembase.barcode">
+      <HintPath>report\systembase.barcode.dll</HintPath>
+    </Reference>
+    <Reference Include="systembase.iTextSharp">
+      <HintPath>report\lib\systembase.iTextSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="systembase.json">
+      <HintPath>report\systembase.json.dll</HintPath>
+    </Reference>
+    <Reference Include="systembase.report">
+      <HintPath>report\systembase.report.dll</HintPath>
+    </Reference>
+    <Reference Include="systembase.report.renderer.pdf">
+      <HintPath>report\systembase.report.renderer.pdf.dll</HintPath>
+    </Reference>
+    <Reference Include="zxing">
+      <HintPath>report\zxing.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>

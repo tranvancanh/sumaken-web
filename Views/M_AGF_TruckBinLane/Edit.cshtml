@@ -1,0 +1,78 @@
+﻿@model stock_management_system.Models.M_AGF_TruckBinLaneModel
+@{
+	Layout = null;
+}
+
+<head>
+	<style>
+	</style>
+</head>
+
+<!-- Modal -->
+<div class="modal fade" id="edittruckbinmanagament" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title w-100 text-center position-absolute font-weight-bold">修正</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+			</div>             <!--Modal Header End-->
+			<div class="modal-body">
+				<form method="post" asp-controller="M_AGF_TruckBinLane" asp-action="Edit" enctype="multipart/form-data" autocomplete="on"
+					  data-ajax="true" data-ajax-update="formDetails">
+					@Html.AntiForgeryToken()
+					<span class="text-danger">@ViewData["Error"] </span>
+					<div class="modal-body m">
+						<div class="form-group">
+							<label>運送会社</label>
+							<select asp-for="TruckBinCode" asp-items="Model.TruckBinList" name="TruckBinCode" class="form-control" disabled></select>
+						</div>
+						<div class="form-group">
+							<label>レーン選択</label>
+							<select asp-for="LaneNo" asp-items="Model.LaneNoList" name="Laneno" class="form-control"></select>
+						</div>
+						<div class="form-group">
+							<label>グループ番号入力</label>
+							<input asp-for="@Model.LaneGroupID" name="LaneGroupID" class="form-control" id="lane_group_idEdit" type="text"/>
+						</div>
+						@* 非表示 *@
+						<div hidden class="form-group">
+							<label>運送会社便コード</label>
+							<input asp-for="@Model.TruckBinCode" name="TruckBinCode" class="form-control" id="truck_bin_codeEdit" type="text" />
+						</div>
+						<div hidden class="form-group">
+							<label>oldレーン番号</label>
+							<input asp-for="@Model.OldLaneNo" name="OldLaneNo" class="form-control" id="old_lane_noEdit" type="text" />
+						</div>
+						<div hidden class="form-group">
+							<label>oldグループ番号</label>
+							<input asp-for="@Model.OldLaneGroupID" name="OldLaneGroupID" class="form-control" id="old_lane_group_idEdit" type="text" />
+						</div>
+						<div class="btn-header pt-6">
+							<div class="btn-headerLeft">
+								<button type="submit" id="storeIn-delete-btn" name="Delete" value="削除" class="btn btn-danger btn-icon-split">
+									<span class="icon text-white-50">
+										<i class="fas fa-trash"></i>
+									</span>
+									<span class="text">削除</span>
+								</button>
+							</div>
+						</div>
+						<!--Modal Footer Start-->
+						<div class="modal-footer mt-6">
+							<button class="btn btn-success col" type="submit" name="Updata" value="保存">保存</button>
+							<button class="btn btn-secondary col" type="button" onclick="EditTruckBinCancelSubmit()">キャンセル</button>
+						</div>  <!--Modal Footer End-->
+					</div>
+				</form>
+			</div>             <!--Modal Body End-->
+		</div>
+	</div>
+</div>
+<!--Modal Body End-->
+@*
+
+
+@section Scripts {
+	@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+}*@

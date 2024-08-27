@@ -1,0 +1,121 @@
+﻿@using System.Security.Claims
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@using stock_management_system.Models.common;
+@model stock_management_system.Models.D_ScanRecordModel.D_ScanRecordViewModel
+
+@{
+	Model.GetBaseView(User, ViewContext);
+	ViewData["Title"] = Model.ViewTitle;
+}
+<head>
+	<style>
+	</style>
+</head>
+<div class="h4 mb-3 text-gray-800">
+	@ViewData["Title"]
+</div>
+
+<div id="motionmanagamentmodify"></div>
+<div class="card shadow">
+	<div class="card-header text-gray-800">
+		検索
+	</div>
+	<div class="card-body">
+
+		<div class="row">
+			<div class="col-md-12">
+				<form asp-controller="D_ScanRecord" enctype="multipart/form-data">
+					<div class="form-row">
+						<div class="p-2" style="width:200px;">
+							<label>ハンディ画面</label>
+							<select asp-for="SelectedHandyPageID" asp-items="Model.HandyPageIDList" class="form-control" name="SelectedHandyPageID">
+							</select>
+						</div>
+						<div class="p-2" style="width:200px;">
+							<label>読取日時(始)</label>
+							<input type="text" asp-for="SelectedScanTime" name="SelectedScanTime" class="form-control datepicker" id="AGFMotionTextColorStart" placeholder="日付を選択" readonly>
+							<span asp-validation-for="SelectedScanTime" class="text-danger"></span>
+						</div>
+						<div class="p-2" style="width:200px;">
+							<label>読取日時(終)</label>
+							<input type="text" asp-for="SelectedScanTimeEnd" name="SelectedScanTimeEnd" class="form-control datepicker" id="AGFMotionTextColorEnd" placeholder="日付を選択" readonly>
+							<span asp-validation-for="SelectedScanTimeEnd" class="text-danger"></span>
+						</div>
+						@* <div class="p-2" style="width:200px;">
+							<label>送信日時</label>
+							<input type="text" asp-for="SelectedCreateDate" name="SelectedCreateDate" class="form-control datepicker" id="AGFMotionTextColorEnd" placeholder="日付を選択" readonly>
+							<span asp-validation-for="SelectedCreateDate" class="text-danger"></span>
+						</div> *@
+						<div class="p-2" style="width:200px;">
+							<label>ハンディユーザー</label>
+							<select asp-for="SelectedHandyUserID" asp-items="Model.HandyUserIDList" class="form-control" name="SelectedHandyUserID">
+								<option value="0">全て</option>
+							</select>
+						</div>
+					<div class="p-2 p-btn-search" style="max-width:200px;">
+						<button type="submit" asp-action="SearchData" id="ReciptSerchBtn" class="btn btn-primary btn-icon-split">
+							<span class="icon text-white-50">
+								<i class="fas fa-search fa-fw"></i>
+							</span>
+							<span class="text">検索</span>
+						</button>
+					</div>
+				</form>
+			</div>
+			</div>
+		</div>
+
+
+		<div class="p-2">
+			<span class="text-danger">@ViewData["Error"] </span>
+			<span class="text-success">@ViewData["Message"] </span>
+		</div>
+			<div class="row">
+				<div class="col-md-12">
+					@if (Model.ScanRecordList != null)
+					{
+						<div id="PartialList">
+							@await Html.PartialAsync("~/Views/D_ScanRecord/_ScanRecordList.cshtml")
+						</div>
+					}
+				</div>
+			</div>
+	</div>
+</div>
+<br />
+<br />
+
+@section Scripts {
+
+	@*@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}*@
+	<script type="text/javascript" src="~/js/site.js"></script>
+									let ROOT = '@Url.Content("~")';
+									$(document).ready(function ()
+
+	<script type="text/javascript">
+
+		//読取・送信日付の値がnullの場合、今日の日付を設定する
+		$(function () {
+			$('#AGFMotionTextColorStart').datepicker({
+				format: 'yyyy-mm-dd',
+				language: 'ja',
+				autoclose: true,
+				todayHighlight: true,
+			});
+			$('#AGFMotionTextColorEnd').datepicker({
+				format: 'yyyy-mm-dd',
+				language: 'ja',
+				autoclose: true,
+				todayHighlight: true,
+			});
+			if ($('#AGFMotionTextColorStart').val() == '') {
+				$('#AGFMotionTextColorStart').datepicker('setDate', new Date());
+			}
+			if ($('#AGFMotionTextColorEnd').val() == '') {
+				$('#AGFMotionTextColorEnd').datepicker('setDate', new Date());
+			}
+		});
+
+	</script>
+	}

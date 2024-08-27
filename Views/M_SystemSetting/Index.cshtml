@@ -1,0 +1,92 @@
+﻿@using System.Security.Claims
+@model stock_management_system.Models.M_SystemSettingViewModel
+@{
+    Model.GetBaseView(User, ViewContext);
+    ViewData["Title"] = Model.ViewTitle;
+}
+<head>
+    <style>
+    </style>
+</head>
+<div class="h4 mb-3 text-gray-800">
+    @ViewData["Title"]
+</div>
+
+<div id="systemsettingmanagamentmodify"></div>
+<div class="card shadow">
+    <div class="card-header text-gray-800">
+        検索
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12">
+                <form class="form-inline" method="post" asp-controller="M_SystemSetting" asp-action="Index">
+                    <div class="form-row p-2">
+                        <input type="text" asp-for="TextSearch" name="TextSearch" id="tbxUserNameSearch" class="form-control border-0 mr-2 bg-gray-100" placeholder="キーワードを入力" />
+                        <button type="submit" class="btn btn-light btn-square" title="検索">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="p-2">
+            <span class="text-danger">@ViewData["Error"] </span>
+            <span class="text-success">@ViewData["Message"] </span>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="sticky_table  table-hover-event">
+                    <thead>
+                        <tr>
+                            <th class="table-icon-edit"></th>
+                            <th>設定コード</th>
+                            <th>設定値</th>
+                            <th>設定値（文字列）</th>
+                            <th style="min-width:200px;">タイトル</th>
+                            <th style="min-width:400px;">詳細</th>
+                            <th>最終更新日</th>
+                            <th>最終更新者</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (@Model != null && @Model.SystemSettingSearchList != null)
+                        {
+                            @foreach (var obj in @Model.SystemSettingSearchList)
+                            {
+                                <tr>
+                                    <td class="table-icon-edit">
+                                        <button type="button" class="btn btn-light btn-square" data-toggle="modal" onclick="GetSystemSettingSubmitAjax(systemSettingCode = '@obj.SystemSettingCode')">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                    <td>@obj.SystemSettingCode</td>
+                                    <td>@obj.SystemSettingValue</td>
+                                    <td>@obj.SystemSettingStringValue</td>
+                                    <td>@obj.SystemSettingTitle</td>
+                                    <td>@obj.SystemSettingDetail</td>
+                                    <td>@obj.LastUpdateDateTime</td>
+                                    <td>@obj.LastUpdateUserName</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<br />
+                                        
+@section Scripts {
+    @*@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}*@
+    <script src="~/js/M_SystemSetting/Index.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        let ROOT = '@Url.Content("~")';
+        $(document).ready(function () {
+
+        });
+    </script>
+
+}

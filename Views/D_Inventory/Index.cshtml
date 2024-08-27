@@ -1,0 +1,77 @@
+﻿@model D_InventoryModel.D_InventorySearchModel
+@using stock_management_system.common;
+@using stock_management_system.Models.common;
+@{
+    Model.GetBaseView(User, ViewContext);
+    ViewData["Title"] = Model.ViewTitle;
+}
+
+<style>
+    .card {
+        min-width: 300px !important;
+    }
+
+    .c-dialog {
+        max-width: 1500px !important;
+    }
+</style>
+<div class="h4 mb-3 text-gray-800">
+    @ViewData["Title"]
+</div>
+<div class="card shadow mb-4">
+    <div class="card-header text-gray-800">
+        検索
+    </div>
+    <div class="card-body">
+        <div class="c-dialog">
+            <form asp-controller="D_StockStatus" enctype="multipart/form-data">
+                <div class="form-row">
+                    <div class="p-2" style="width:200px;">
+                        <label>倉庫</label>
+                        <select asp-for="DepoID" asp-items="Model.DepoList" name="DepoID" class="form-control"></select>
+                    </div>
+                    <div class="p-2" style="width:200px;">
+                        <label asp-for="InventoryDate"></label>
+                        <input type="text" asp-for="InventoryDate" class="form-control datepicker" placeholder="">
+                        <span asp-validation-for="InventoryDate" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <button type="submit" asp-action="Search" id="ReciptSerchBtn" class="btn btn-primary btn-icon-split">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-search fa-fw"></i>
+                        </span>
+                        <span class="text">検索</span>
+                    </button>
+                    <button type="submit" method="post" asp-action="ExcelOutput" class="btn btn-success btn-icon-split">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-file-export fa-fw"></i>
+                        </span>
+                        <span class="text">Excel</span>
+                    </button>
+                </div>
+            </form>
+            <div class="valid-area">
+                <span class="text-danger">@ViewData["Error"] </span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 mt-3">
+                @if (Model.InventoryStockList != null)
+                {
+                    <div id="PartialList">
+                        @await Html.PartialAsync("~/Views/D_StockStatus/_InventoryInputList.cshtml")
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--親jsファイル呼び出し-->
+<script type="text/javascript" src="~/js/site.js"></script>
+
+<script>
+    $(document).ready(function () {
+    })
+</script>

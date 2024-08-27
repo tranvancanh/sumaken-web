@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - スマホDE検品</title>
+
+    <link href="~/css/site.css" rel="stylesheet">
+
+    <!-- ログイン共通化用 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- アイコン設定 -->
+    <link rel="shortcut icon" type="image/png" href="~/image/スマホDE検品img1.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="~/image/スマホDE検品img1.png">
+
+    <!-- Custom fonts for this template-->
+    <link href="~/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+          rel="stylesheet">
+    <link href="~/css/sb-admin-2.css" rel="stylesheet">
+
+    @*<link rel="stylesheet" href="~/css/skins/all.css">*@
+    <link href="~/css/skins/flat/grey.css" rel="stylesheet">
+
+
+</head>
+<body>
+    <style>
+        body,
+        #wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        footer {
+            margin-top: auto;
+            color: #9E9E9E;
+        }
+
+        .footer-inner {
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+    <div id="wrapper">
+        <main>
+            <div id="main-inner">
+                @RenderBody()
+            </div>
+
+        </main>
+        <footer>
+            <div class="footer-inner">
+                <div class="footer-item">
+                    &copy; Tozan co., Ltd.
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- 確認用モーダルの設定 -->
+    <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmModalLabel">確認</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="閉じる">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id="confirm-modal-body" class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
+                    <button type="button" id="confirm-modal-run-btn" class="btn btn-danger">実行</button>
+                </div><!-- /.modal-footer -->
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="~/vendor/jquery/jquery.min.js"></script>
+    <script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!--jQuery（動的）のバリデーション↓-->
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js" type="text/javascript"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js" type="text/javascript"></script>
+    <!--jQuery（動的）のバリデーション↑-->
+
+    <script src="~/js/icheck.min.js"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
+
+<script>
+    $(function () {
+        CheckRadioChange();
+    });
+
+    function CheckRadioChange() {
+        //チェックボックスデザイン変更
+        $(document).on('input').iCheck({
+            checkboxClass: 'icheckbox_flat-grey',
+            increaseArea: '20%' // optional
+        });
+    }
+
+    $("#confirm-modal-run-btn").on("click", function () {
+        $('#confirmModal').modal('hide');
+    });
+
+</script>
